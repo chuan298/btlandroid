@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.ptit.timetable">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity android:name="com.ptit.timetable.activities.SubjectCurrentActivity"
+            android:label="Môn học hiện tại"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ptit.timetable.activities.TKBActivity"
+            android:label="Thời khoá biểu"
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+
+        <activity
+            android:name="com.ptit.timetable.activities.PersonInfoActivity"
+            android:label="Thông tin cá nhân"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <meta-data
+            android:name="android.support.PARENT_ACTIVITY"
+            android:value="com.ptit.timetable.activities.PersonInfoActivity" />
+
+        <activity
+            android:name="com.ptit.timetable.activities.HistoryCheckinActivity"
+            android:label="Lịch sử điểm danh"
+            android:theme="@style/AppTheme.NoActionBar" />
+    </application>
+
+</manifest>
