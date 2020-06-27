@@ -23,6 +23,7 @@ import android.widget.Toast;
 
 
 import com.ptit.timetable.R;
+import com.ptit.timetable.utils.HttpServices;
 
 
 public class SubjectCurrentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -35,6 +36,8 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_subject_current);
+        HttpServices.setContext(getBaseContext());
+//        HttpServices.get("")
         initAll();
     }
 

@@ -7,7 +7,7 @@ import android.support.v4.view.ViewPager;
 
 import com.ptit.timetable.adapters.FragmentsTabAdapter;
 
-import com.ptit.timetable.model.Subject;
+import com.ptit.timetable.model.Subject_;
 
 import java.util.ArrayList;
 
@@ -21,10 +21,10 @@ import java.util.regex.Pattern;
 public class AlertDialogsHelper {
 
 
-    public static void getAddSubjectDialog(final Activity activity, final ArrayList<Subject> subjectArrays, final FragmentsTabAdapter adapter, final ViewPager viewPager) {
+    public static void getAddSubjectDialog(final Activity activity, final ArrayList<Subject_> subjectArrays, final FragmentsTabAdapter adapter, final ViewPager viewPager) {
         DbHelper dbHelper = new DbHelper(activity);
-        Subject subject = new Subject();
-        for (Subject w : subjectArrays) {
+        Subject_ subject = new Subject_();
+        for (Subject_ w : subjectArrays) {
             subject.setSubject_name(w.getSubject_name());
             Matcher fragment = Pattern.compile("(.*Fragment)").matcher(w.getFragment());
             subject.setFragment(fragment.find() ? fragment.group() : null);

@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.ptit.timetable.R;
-import com.ptit.timetable.model.Subject;
+import com.ptit.timetable.model.Subject_;
 
 import java.util.ArrayList;
 import java.util.Objects;
@@ -23,12 +23,12 @@ import java.util.Objects;
 /**
  * Created by Ulan on 08.09.2018.
  */
-public class WeekAdapter extends ArrayAdapter<Subject> {
+public class WeekAdapter extends ArrayAdapter<Subject_> {
 
     private Activity mActivity;
     private int mResource;
-    private ArrayList<Subject> weeklist;
-    private Subject subject;
+    private ArrayList<Subject_> weeklist;
+    private Subject_ subject;
     private ListView mListView;
 
     private static class ViewHolder {
@@ -40,7 +40,7 @@ public class WeekAdapter extends ArrayAdapter<Subject> {
         CardView cardView;
     }
 
-    public WeekAdapter(Activity activity, ListView listView, int resource, ArrayList<Subject> objects) {
+    public WeekAdapter(Activity activity, ListView listView, int resource, ArrayList<Subject_> objects) {
         super(activity, resource, objects);
         mActivity = activity;
         mResource = resource;
@@ -59,7 +59,7 @@ public class WeekAdapter extends ArrayAdapter<Subject> {
         String room = Objects.requireNonNull(getItem(position)).getRoom();
         int color = getItem(position).getColor();
         String day = getItem(position).getFragment();
-        this.subject = new Subject(subject, teacher, room, time_from, time_to, color,day);
+        this.subject = new Subject_(subject, teacher, room, time_from, time_to, color,day);
         final ViewHolder holder;
 
         if(convertView == null){
@@ -89,11 +89,11 @@ public class WeekAdapter extends ArrayAdapter<Subject> {
         return convertView;
     }
 
-    public ArrayList<Subject> getWeekList() {
+    public ArrayList<Subject_> getWeekList() {
         return weeklist;
     }
 
-    public Subject getSubject() {
+    public Subject_ getSubject() {
         return subject;
     }
 

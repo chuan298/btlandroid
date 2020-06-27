@@ -25,7 +25,7 @@ import com.ptit.timetable.fragments.ThursdayFragment;
 import com.ptit.timetable.fragments.TuesdayFragment;
 import com.ptit.timetable.fragments.WednesdayFragment;
 import com.ptit.timetable.R;
-import com.ptit.timetable.model.Subject;
+import com.ptit.timetable.model.Subject_;
 import com.ptit.timetable.utils.AlertDialogsHelper;
 
 import java.util.ArrayList;
@@ -78,11 +78,11 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
 
     
     private void setupCustomDialog() {
-        ArrayList<Subject> subjectArrayList = new ArrayList<>();
-        subjectArrayList.add(new Subject("Lap trinh java","Nguyen Manh Son","402-A2","9:00","11:00", Color.GREEN,"monday"));
-        subjectArrayList.add(new Subject("Lap trinh C++","Nguyen Manh Son","402-A2","9:00","11:00", Color.YELLOW,"tuesday"));
-        subjectArrayList.add(new Subject("Lap trinh Android","Nguyen Manh Son","402-A2","9:00","11:00", Color.LTGRAY,"thursday"));
-        subjectArrayList.add(new Subject("Lap trinh C#","Nguyen Manh Son","402-A2","9:00","11:00", Color.BLUE,"monday"));
+        ArrayList<Subject_> subjectArrayList = new ArrayList<>();
+        subjectArrayList.add(new Subject_("Lap trinh java","Nguyen Manh Son","402-A2","9:00","11:00", Color.GREEN,"monday"));
+        subjectArrayList.add(new Subject_("Lap trinh C++","Nguyen Manh Son","402-A2","9:00","11:00", Color.YELLOW,"tuesday"));
+        subjectArrayList.add(new Subject_("Lap trinh Android","Nguyen Manh Son","402-A2","9:00","11:00", Color.LTGRAY,"thursday"));
+        subjectArrayList.add(new Subject_("Lap trinh C#","Nguyen Manh Son","402-A2","9:00","11:00", Color.BLUE,"monday"));
         AlertDialogsHelper.getAddSubjectDialog(TKBActivity.this, subjectArrayList, adapter, viewPager);
     }
 

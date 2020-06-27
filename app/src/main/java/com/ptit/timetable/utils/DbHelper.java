@@ -6,7 +6,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import com.ptit.timetable.model.Subject;
+import com.ptit.timetable.model.Subject_;
 import com.ptit.timetable.model.Teacher;
 
 import java.util.ArrayList;
@@ -136,7 +136,7 @@ public class DbHelper extends SQLiteOpenHelper{
     /**
      * Methods for Week fragments
      **/
-    public void insertWeek(Subject subject){
+    public void insertWeek(Subject_ subject){
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(WEEK_SUBJECT, subject.getSubject_name());
@@ -151,13 +151,13 @@ public class DbHelper extends SQLiteOpenHelper{
         db.close();
     }
 
-    public void deleteWeekById(Subject subject) {
+    public void deleteWeekById(Subject_ subject) {
         SQLiteDatabase db = this.getWritableDatabase();
         db.delete(TIMETABLE, WEEK_ID + " = ? ", new String[]{String.valueOf(subject.getId())});
         db.close();
     }
 
-    public void updateWeek(Subject subject) {
+    public void updateWeek(Subject_ subject) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(WEEK_SUBJECT, subject.getSubject_name());
@@ -170,14 +170,14 @@ public class DbHelper extends SQLiteOpenHelper{
         db.close();
     }
 
-    public ArrayList<Subject> getWeek(String fragment){
+    public ArrayList<Subject_> getWeek(String fragment){
         SQLiteDatabase db = this.getWritableDatabase();
 
-        ArrayList<Subject> weeklist = new ArrayList<>();
-        Subject subject;
+        ArrayList<Subject_> weeklist = new ArrayList<>();
+        Subject_ subject;
         Cursor cursor = db.rawQuery("SELECT * FROM ( SELECT * FROM "+TIMETABLE+" ORDER BY " + WEEK_FROM_TIME + " ) WHERE "+ WEEK_FRAGMENT +" LIKE '"+fragment+"%'",null);
         while (cursor.moveToNext()){
-            subject = new Subject();
+            subject = new Subject_();
             subject.setId(cursor.getInt(cursor.getColumnIndex(WEEK_ID)));
             subject.setSubject_name(cursor.getString(cursor.getColumnIndex(WEEK_SUBJECT)));
             subject.setTeacher(cursor.getString(cursor.getColumnIndex(WEEK_TEACHER)));

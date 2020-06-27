@@ -10,7 +10,7 @@ import android.widget.AbsListView;
 import android.widget.ListView;
 
 import com.ptit.timetable.adapters.WeekAdapter;
-import com.ptit.timetable.model.Subject;
+import com.ptit.timetable.model.Subject_;
 import com.ptit.timetable.R;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class FragmentHelper {
             public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
                 switch (item.getItemId()) {
                     case R.id.action_delete:
-                        ArrayList<Subject> removelist = new ArrayList<>();
+                        ArrayList<Subject_> removelist = new ArrayList<>();
                         SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
                         for (int i = 0; i < checkedItems.size(); i++) {
                             int key = checkedItems.keyAt(i);

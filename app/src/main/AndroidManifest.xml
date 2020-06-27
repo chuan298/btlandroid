@@ -16,11 +16,7 @@
         <activity android:name="com.ptit.timetable.activities.SubjectCurrentActivity"
             android:label="Môn học hiện tại"
             android:theme="@style/AppTheme.NoActionBar">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name="com.ptit.timetable.activities.TKBActivity"
@@ -45,6 +41,21 @@
             android:name="com.ptit.timetable.activities.HistoryCheckinActivity"
             android:label="Lịch sử điểm danh"
             android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name="com.ptit.timetable.activities.AuthenticationActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name="com.ptit.timetable.activities.LoginActivity"
+            android:label=""
+            android:theme="@style/AppTheme.NoActionBar">
+        </activity>
     </application>
 
 </manifest>
