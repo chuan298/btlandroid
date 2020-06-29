@@ -55,4 +55,17 @@ public class PracticeGroup {
     public Integer getDayPractice() {
         return dayPractice;
     }
+
+    @Override
+    public String toString() {
+        return "PracticeGroup{" +
+                "id=" + id +
+                ", subjectGroup=" + subjectGroup +
+                ", practiceShift=" + practiceShift +
+                ", practiceRoom=" + practiceRoom +
+                ", weekPractice='" + weekPractice + '\'' +
+                ", groupPractice=" + groupPractice +
+                ", dayPractice=" + dayPractice +
+                '}';
+    }
 }

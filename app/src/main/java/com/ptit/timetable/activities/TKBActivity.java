@@ -33,6 +33,7 @@ import com.ptit.timetable.fragments.WednesdayFragment;
 import com.ptit.timetable.R;
 import com.ptit.timetable.model.DaySchedule;
 import com.ptit.timetable.model.Schedule;
+import com.ptit.timetable.model.ScheduleCourse;
 import com.ptit.timetable.model.Subject_;
 import com.ptit.timetable.model.Timetable;
 import com.ptit.timetable.utils.AlertDialogsHelper;
@@ -79,12 +80,12 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
                 if(response.isSuccessful()){
                     Gson gson = new Gson();
                     String responStr = response.body().string();
-                    //System.out.println(responStr);
-                    Type complexType = new TypeToken<Map<Integer, DaySchedule>>() {}.getType();
-                    Map<Integer, Map<Integer, List<Pair<Schedule, Integer>>>> timetable = gson.fromJson(responStr, complexType);
-                    Set<Map.Entry<Integer, Map<Integer, List<Pair<Schedule, Integer>>>> entries = timetable.entrySet();
-                    for( Map.Entry<Integer, List<Pair<Schedule, Integer>>>> entry : entries){
-                        System.out.println(entry.getValue().getSchedule());
+                    System.out.println(responStr);
+                    Type complexType = new TypeToken<Map<Integer, List<DaySchedule>>>() {}.getType();
+                    Map<Integer, List<DaySchedule>> timetable = gson.fromJson(responStr, complexType);
+                    Set<Map.Entry<Integer, List<DaySchedule>>> entries = timetable.entrySet();
+                    for( Map.Entry<Integer, List<DaySchedule>> entry : entries){
+                        System.out.println(entry.getValue().get(1).getDay_number());
                     }
                 }
             }
