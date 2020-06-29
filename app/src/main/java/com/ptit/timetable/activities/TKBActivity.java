@@ -1,6 +1,7 @@
 package com.ptit.timetable.activities;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -13,11 +14,16 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ptit.timetable.adapters.FragmentsTabAdapter;
 import com.ptit.timetable.fragments.FridayFragment;
 import com.ptit.timetable.fragments.MondayFragment;
@@ -25,11 +31,26 @@ import com.ptit.timetable.fragments.ThursdayFragment;
 import com.ptit.timetable.fragments.TuesdayFragment;
 import com.ptit.timetable.fragments.WednesdayFragment;
 import com.ptit.timetable.R;
+import com.ptit.timetable.model.DaySchedule;
+import com.ptit.timetable.model.Schedule;
 import com.ptit.timetable.model.Subject_;
+import com.ptit.timetable.model.Timetable;
 import com.ptit.timetable.utils.AlertDialogsHelper;
+import com.ptit.timetable.utils.HttpServices;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class TKBActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
@@ -37,10 +58,39 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
     private FragmentsTabAdapter adapter;
     private ViewPager viewPager;
 //    private boolean switchSevenDays;
-
+    private String NAME = "";
+    private String USERNAME = "";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
+        NAME = sharedPreferences.getString("NAME", " ");
+        USERNAME = sharedPreferences.getString("USERNAME", " ");
+        int ID = sharedPreferences.getInt("ID", 0);
+
+        HttpServices.getWithToken("http://192.168.1.67:8080/api/get-timetable?student_id=" + ID, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()){
+                    Gson gson = new Gson();
+                    String responStr = response.body().string();
+                    //System.out.println(responStr);
+                    Type complexType = new TypeToken<Map<Integer, DaySchedule>>() {}.getType();
+                    Map<Integer, Map<Integer, List<Pair<Schedule, Integer>>>> timetable = gson.fromJson(responStr, complexType);
+                    Set<Map.Entry<Integer, Map<Integer, List<Pair<Schedule, Integer>>>> entries = timetable.entrySet();
+                    for( Map.Entry<Integer, List<Pair<Schedule, Integer>>>> entry : entries){
+                        System.out.println(entry.getValue().getSchedule());
+                    }
+                }
+            }
+        });
+
+
         setContentView(R.layout.activity_tkb);
         initAll();
     }
@@ -51,6 +101,13 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvName = headerView.findViewById(R.id.tvHeaderName);
+        TextView tvUsername = headerView.findViewById(R.id.tvHeaderUserName);
+        tvName.setText(NAME);
+        tvUsername.setText(USERNAME);
+        //
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);

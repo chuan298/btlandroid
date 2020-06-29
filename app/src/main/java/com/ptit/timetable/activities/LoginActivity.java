@@ -11,6 +11,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.Toast;
 
 
@@ -19,6 +20,8 @@ import com.google.gson.Gson;
 import com.ptit.timetable.R;
 import com.ptit.timetable.model.Schedule;
 import com.ptit.timetable.model.Token;
+import com.ptit.timetable.model.TokenDecode;
+import com.ptit.timetable.utils.DecodeToken;
 import com.ptit.timetable.utils.HttpServices;
 
 
@@ -37,9 +40,12 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
-    Button button_login, bt;
+
+    final  String LOGIN_URL = "http://192.168.1.67:8080/api/login";
+
+    Button button_login;
     LinearLayout layout;
-    ProgressDialog progressDialog;
+    ProgressBar progressBar;
     EditText edUsername, edPassword;
 
     @Override
@@ -48,40 +54,44 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
         button_login = findViewById(R.id.btn_login);
         layout = findViewById(R.id.layout);
-        bt = findViewById(R.id.button1);
         edUsername = findViewById(R.id.edUsername);
         edPassword = findViewById(R.id.edPassword);
-//        // hide action bar
-//        ActionBar actionBar = getSupportActionBar();
-//        actionBar.hide();
-        // hide status bar
-//        android.app.ActionBar status = getActionBar();
-//        status.hide();
 
-//        this.requestWindowFeature(Window.FEATURE_NO_TITLE);
+        progressBar = findViewById(R.id.progressBar);
+        progressBar.setVisibility(View.INVISIBLE);
+
         HttpServices.setContext(getBaseContext());
-        progressDialog = new ProgressDialog(LoginActivity.this, R.style.AppTheme_NoActionBar);
         button_login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                progressBar.setVisibility(View.VISIBLE);
                 ////                String json = "{\"username\":1,\"password\":\"1\"}";
                 JSONObject jsonObject = new JSONObject();
                 try {
-                    jsonObject.put("username", edUsername.getText().toString().trim());
-                    jsonObject.put("password", edUsername.getText().toString().trim());
+                    String username = edUsername.getText().toString().trim();
+                    String password = edPassword.getText().toString().trim();
+                    jsonObject.put("username", username);
+                    jsonObject.put("password", password);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
                 System.out.println("->>>>");
                 //
-//                progressDialog.setIndeterminate(true);
-                progressDialog.setMessage("Đăng đăng nhập...");
-                progressDialog.show();
-                HttpServices.post("http://192.168.1.6:8080/api/login", String.valueOf(jsonObject), new Callback() {
+                HttpServices.post(LOGIN_URL, String.valueOf(jsonObject), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
-                        System.out.println("login fail");
-                        e.printStackTrace();
+                        runOnUiThread(new Runnable() {
+                            public void run() {
+                                Toast.makeText(getBaseContext(), "Có lỗi xảy ra!", Toast.LENGTH_LONG).show();
+                                try {
+                                    Thread.sleep(300);
+                                } catch (InterruptedException e) {
+                                    e.printStackTrace();
+                                }
+                                progressBar.setVisibility(View.INVISIBLE);
+
+                            }
+                        });
                     }
 
                     @Override
@@ -96,9 +106,17 @@ public class LoginActivity extends AppCompatActivity {
 
                             SharedPreferences preferences = getSharedPreferences("sharedPreferenceManager", Context.MODE_PRIVATE);
                             SharedPreferences.Editor editor = preferences.edit();
-
-
                             editor.putString("TOKEN", token.getAccessToken());
+                            //
+                            TokenDecode tokenDecode = null;
+                            try {
+                                tokenDecode = gson.fromJson(DecodeToken.decoded(HttpServices.getCurrentToken()), TokenDecode.class);
+                                editor.putInt("ID", tokenDecode.getId());
+                                editor.putString("NAME", tokenDecode.getName());
+                                editor.putString("USERNAME", tokenDecode.getUsername());
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
                             editor.apply();
                             ///
                             runOnUiThread(new Runnable() {
@@ -110,27 +128,22 @@ public class LoginActivity extends AppCompatActivity {
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    progressDialog.dismiss();
                                     Intent intent = new Intent(getBaseContext(), SubjectCurrentActivity.class);
                                     startActivity(intent);
                                     finish();
-
-
                                 }
                             });
                         } else {
                             // Request not successful
                             runOnUiThread(new Runnable() {
                                 public void run() {
-
-                                    Toast.makeText(getBaseContext(), "dsadsadsadsad", Toast.LENGTH_LONG).show();
+                                    Toast.makeText(getBaseContext(), "Sai thông tin.", Toast.LENGTH_LONG).show();
                                     try {
                                         Thread.sleep(300);
                                     } catch (InterruptedException e) {
                                         e.printStackTrace();
                                     }
-                                    progressDialog.dismiss();
-
+                                    progressBar.setVisibility(View.INVISIBLE);
 
                                 }
                             });
@@ -142,62 +155,7 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
         //
-        bt.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-//                HttpUrl.Builder urlBuilder = HttpUrl.parse("http://192.168.1.67:8080/api/get").newBuilder();
-//                urlBuilder.addQueryParameter("id", "1");
-//                String url = urlBuilder.build().toString();
-//                System.out.println(url);
-                HttpServices.getWithToken("http://192.168.2.182:8080/api/get-timetable?student_id=1", new Callback() {
-                    @Override
-                    public void onFailure(Call call, IOException e) {
-                        System.out.println("faillll");
-                    }
-
-                    @Override
-                    public void onResponse(Call call, Response response) throws IOException {
-                        if (response.isSuccessful()) {
-                            Gson gson = new Gson();
-                            //final String student = response.body().string();
-                            //System.out.println(response.body().string());
-                            //Type listType = new TypeToken<ArrayList<Schedule>>(){}.getType();
-                            final List<Schedule> schedules = gson.fromJson(response.body().string(), List.class);
-
-                            runOnUiThread(new Runnable() {
-                                public void run() {
-
-                                    Toast.makeText(getBaseContext(), schedules.toString(), Toast.LENGTH_LONG).show();
-                                    try {
-                                        Thread.sleep(300);
-                                    } catch (InterruptedException e) {
-                                        e.printStackTrace();
-                                    }
-                                    progressDialog.dismiss();
-
-
-                                }
-                            });
-                        }
-
-                    }
-                });
-            }
-        });
     }
 
-    public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    OkHttpClient client = new OkHttpClient();
-
-    Call post(String url, String json, Callback callback) {
-        RequestBody body = RequestBody.create(JSON, json);
-        Request request = new Request.Builder()
-                .url(url)
-                .post(body)
-                .build();
-        Call call = client.newCall(request);
-        call.enqueue(callback);
-        return call;
-    }
 }

@@ -19,6 +19,7 @@
         app:srcCompat="@mipmap/ic_launcher" />
 
     <TextView
+        android:id="@+id/tvHeaderName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
@@ -27,9 +28,11 @@
         android:textSize="18sp" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/tvHeaderUserName"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/ulan_nurymov_gmail_com" />
+        android:text="@string/ulan_nurymov_gmail_com"
+        android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+        android:textSize="18sp" />
 
 </LinearLayout>
