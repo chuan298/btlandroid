@@ -44,6 +44,9 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
     private int REQUEST_CODE_CAMERA = 123;
     String NAME = " ";
     String USERNAME = " ";
+
+    final String BASE_URL = "http://192.168.1.67:8080";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,8 +58,8 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
         int ID = sharedPreferences.getInt("ID", 0);
 
         ///
-        System.out.println("http://172.19.201.40:8080/api/get-current-schedule?student_id=" + ID);
-        HttpServices.getWithToken("http://192.168.1.67:8080/api/get-current-schedule?student_id=" + ID, new Callback() {
+        System.out.println( BASE_URL + "/api/get-current-schedule?student_id=" + ID);
+        HttpServices.getWithToken(BASE_URL + "/api/get-current-schedule?student_id=" + ID, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {

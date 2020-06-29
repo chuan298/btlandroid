@@ -41,7 +41,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    final  String LOGIN_URL = "http://192.168.1.67:8080/api/login";
+    final  String LOGIN_URL = "http://59e65eebe240.ngrok.io/api/login";
 
     Button button_login;
     LinearLayout layout;
@@ -121,7 +121,6 @@ public class LoginActivity extends AppCompatActivity {
                             ///
                             runOnUiThread(new Runnable() {
                                 public void run() {
-
                                     Toast.makeText(getBaseContext(), HttpServices.getCurrentToken(), Toast.LENGTH_LONG).show();
                                     try {
                                         Thread.sleep(300);

@@ -55,7 +55,7 @@ import okhttp3.Response;
 
 
 public class TKBActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-
+    final String BASE_URL = "http://192.168.1.67:8080";
     private FragmentsTabAdapter adapter;
     private ViewPager viewPager;
 //    private boolean switchSevenDays;
@@ -69,7 +69,7 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         USERNAME = sharedPreferences.getString("USERNAME", " ");
         int ID = sharedPreferences.getInt("ID", 0);
 
-        HttpServices.getWithToken("http://192.168.1.67:8080/api/get-timetable?student_id=" + ID, new Callback() {
+        HttpServices.getWithToken(BASE_URL + "/api/get-timetable?student_id=" + ID, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
 
@@ -87,6 +87,7 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
                     for( Map.Entry<Integer, List<DaySchedule>> entry : entries){
                         System.out.println(entry.getValue().get(1).getDay_number());
                     }
+
                 }
             }
         });
