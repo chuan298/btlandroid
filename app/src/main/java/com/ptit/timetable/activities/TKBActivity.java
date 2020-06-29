@@ -82,10 +82,10 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
                     //System.out.println(responStr);
                     Type complexType = new TypeToken<Map<Integer, DaySchedule>>() {}.getType();
                     Map<Integer, Map<Integer, List<Pair<Schedule, Integer>>>> timetable = gson.fromJson(responStr, complexType);
-                    Set<Map.Entry<Integer, Map<Integer, List<Pair<Schedule, Integer>>>> entries = timetable.entrySet();
-                    for( Map.Entry<Integer, List<Pair<Schedule, Integer>>>> entry : entries){
-                        System.out.println(entry.getValue().getSchedule());
-                    }
+//                    Set<Map.Entry<Integer, Map<Integer, List<Pair<Schedule, Integer>>>> entries = timetable.entrySet();
+//                    for( Map.Entry<Integer, List<Pair<Schedule, Integer>>>> entry : entries){
+//                        System.out.println(entry.getValue().getSchedule());
+//                    }
                 }
             }
         });
