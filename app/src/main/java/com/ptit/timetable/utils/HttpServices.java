@@ -20,7 +20,7 @@ public class HttpServices {
         return preferences.getString("TOKEN","");
     }
 
-    public static Call postWithToken(String url, String json, String token, Callback callback) {
+    public static Call postWithToken(String url, String json, Callback callback) {
         RequestBody body = RequestBody.create(JSON, json);
         Request request = new Request.Builder()
                 .header("Authorization", "Bearer " + getCurrentToken())

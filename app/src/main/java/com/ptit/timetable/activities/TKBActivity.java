@@ -18,6 +18,9 @@ import android.util.Pair;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -60,9 +63,12 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
     final String BASE_URL = "http://192.168.1.67:8080";
     private FragmentsTabAdapter adapter;
     private ViewPager viewPager;
+    private Spinner spinnerWeek;
 //    private boolean switchSevenDays;
     private String NAME = "";
     private String USERNAME = "";
+    private String weeks[] = {"Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4", "Tuần 5", "Tuần 6", "Tuần 7", "Tuần 8", "Tuần 9", "Tuần 10"};
+    private String week = "Tuần 1";
     private Map<Integer, List<DaySchedule>> timetable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -128,6 +134,23 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         tvName.setText(NAME);
         tvUsername.setText(USERNAME);
         //
+        spinnerWeek = findViewById(R.id.spinnerWeek);
+        ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getBaseContext(), R.layout.spinner_item_week, weeks);
+        arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerWeek.setAdapter(arrayAdapter);
+        spinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                week = weeks[i];
+                setupFragments();
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                //
+            }
+        });
+        //
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -143,13 +166,13 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
-        adapter.addFragment(new MondayFragment(), getResources().getString(R.string.monday));
-        adapter.addFragment(new TuesdayFragment(), getResources().getString(R.string.tuesday));
-        adapter.addFragment(new WednesdayFragment(), getResources().getString(R.string.wednesday));
-        adapter.addFragment(new ThursdayFragment(), getResources().getString(R.string.thursday));
-        adapter.addFragment(new FridayFragment(), getResources().getString(R.string.friday));
-        adapter.addFragment(new SaturdayFragment(), getResources().getString(R.string.saturday));
-        adapter.addFragment(new SundayFragment(), getResources().getString(R.string.sunday));
+        adapter.addFragment(new MondayFragment(week), getResources().getString(R.string.monday));
+        adapter.addFragment(new TuesdayFragment(week), getResources().getString(R.string.tuesday));
+        adapter.addFragment(new WednesdayFragment(week), getResources().getString(R.string.wednesday));
+        adapter.addFragment(new ThursdayFragment(week), getResources().getString(R.string.thursday));
+        adapter.addFragment(new FridayFragment(week), getResources().getString(R.string.friday));
+        adapter.addFragment(new SaturdayFragment(week), getResources().getString(R.string.saturday));
+        adapter.addFragment(new SundayFragment(week), getResources().getString(R.string.sunday));
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(day == 1 ? 6 : day-2, true);
         tabLayout.setupWithViewPager(viewPager);

@@ -5,10 +5,12 @@ import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
 import android.support.v7.preference.PreferenceManager;
+import android.util.Base64;
 import android.util.Pair;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -27,11 +29,16 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.ptit.timetable.R;
+import com.ptit.timetable.model.AttendanceResponse;
 import com.ptit.timetable.model.Schedule;
 import com.ptit.timetable.model.ScheduleCourse;
 import com.ptit.timetable.utils.DbUtils;
 import com.ptit.timetable.utils.HttpServices;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -46,7 +53,7 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
     private int REQUEST_CODE_CAMERA = 123;
     String NAME = " ";
     String USERNAME = " ";
-
+    int ID = 0;
     final String BASE_URL = "http://192.168.1.67:8080";
 
     @Override
@@ -57,7 +64,7 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
         NAME = sharedPreferences.getString("NAME", " ");
         USERNAME = sharedPreferences.getString("USERNAME", " ");
-        int ID = sharedPreferences.getInt("ID", 0);
+        ID = sharedPreferences.getInt("ID", 0);
 
         ///
         System.out.println( BASE_URL + "/api/get-current-schedule?student_id=" + ID);
@@ -106,7 +113,7 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
 //        initAll();
     }
 
-    private void initAll(ScheduleCourse scheduleCourse) {
+    private void initAll(final ScheduleCourse scheduleCourse) {
         DbUtils dbUtils = new DbUtils(getBaseContext());
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -127,28 +134,39 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
         tvUsername = headerView.findViewById(R.id.tvHeaderUserName);
         tvName.setText(NAME);
         tvUsername.setText(USERNAME);
+        if(scheduleCourse.getIsAttendanced()){
+            tvStatus.setText("Đã điểm danh");
+            btn_checkin.setEnabled(false);
+            imgCheckin.setEnabled(false);
+        }
         //
         tvSubjectName.setText(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getSubject().getName());
-        tvTeacher.setText("An");
-
+        tvTeacher.setText(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getTeacher());
+        //
+        String startTime = "";
+        String endTime = "";
+        String room = "";
         if(scheduleCourse.getTypeSchedule() == 1){
             System.out.println("start: " + scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift1().getStartLesson());
-            tvRoom.setText(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getRoom().getName());
-            tvStartTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift1().getStartLesson()));
-            tvEndTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift1().getEndLesson()));
+            room = scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getRoom().getName();
+            startTime = DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift1().getStartLesson());
+            endTime = DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift1().getEndLesson());
         }
         else if(scheduleCourse.getTypeSchedule() == 2){
-            tvRoom.setText(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getRoom().getName());
-            tvStartTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift2().getStartLesson()));
-            tvEndTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift2().getEndLesson()));
+            room = scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getRoom().getName();
+            startTime = DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift2().getStartLesson());
+            endTime = DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift2().getEndLesson());
         }
         else if(scheduleCourse.getTypeSchedule() == 3){
-            tvRoom.setText(scheduleCourse.getSchedule().getPracticeGroup().getPracticeRoom().getName());
-            tvStartTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getPracticeShift().getStartLesson()));
-            tvEndTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getPracticeShift().getEndLesson()));
+            room = scheduleCourse.getSchedule().getPracticeGroup().getPracticeRoom().getName();
+            startTime = DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getPracticeShift().getStartLesson());
+            endTime = DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getPracticeShift().getEndLesson());
         }
-
+        tvRoom.setText(room);
+        tvStartTime.setText(startTime);
+        tvEndTime.setText(endTime);
         //
+        final String time = startTime;
         imgCheckin.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +180,67 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
                 if (imgAvatar.getVisibility() == View.GONE) {
                     Toast.makeText(SubjectCurrentActivity.this, "click icon status để chụp ảnh", Toast.LENGTH_SHORT).show();
                 } else {
-                    tvStatus.setText("Đã điểm danh");
+//                    tvStatus.setText("Đã điểm danh");
+                    JSONObject jsonObject = new JSONObject();
+                    try {
+                        String imgbase64 = convertImageToBase64(imgAvatar);
+                        Integer subject_group_id = scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getId();
+                        jsonObject.put("imgbase64", imgbase64);
+                        jsonObject.put("longitude", 1);
+                        jsonObject.put("latitude", 1);
+                        jsonObject.put("subject_group_id", subject_group_id);
+                        jsonObject.put("username", USERNAME);
+                        jsonObject.put("studentId", ID);
+                        jsonObject.put("time", time);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    try {
+                        System.out.println(jsonObject.get("username"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    HttpServices.postWithToken(BASE_URL + "/api/attendance", String.valueOf(jsonObject), new Callback() {
+                        @Override
+                        public void onFailure(Call call, IOException e) {
+                            runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    Toast.makeText(getBaseContext(), "Xảy ra lỗi", Toast.LENGTH_LONG).show();
+                                }
+                            });
+                        }
+
+                        @Override
+                        public void onResponse(Call call, Response response) throws IOException {
+                            if(response.isSuccessful()){
+                                String responseStr = response.body().string();
+                                Gson gson = new Gson();
+                                final AttendanceResponse attendanceResponse = gson.fromJson(responseStr, AttendanceResponse.class);
+
+                                if(attendanceResponse.getIsAttendant()){
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getBaseContext(), "Điểm danh thành công ^^", Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+                                else {
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(getBaseContext(), attendanceResponse.getMessage(), Toast.LENGTH_LONG).show();
+                                        }
+                                    });
+                                }
+
+                            }
+                            else{
+
+                            }
+                        }
+                    });
                 }
             }
         });
@@ -257,5 +335,14 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
         }
+    }
+    public static String convertImageToBase64(ImageView imageView){
+        BitmapDrawable drawable = (BitmapDrawable) imageView.getDrawable();
+        Bitmap bitmap = drawable.getBitmap();
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG,100,bos);
+        byte[] bb = bos.toByteArray();
+        String encodedImage = Base64.encodeToString(bb, Base64.DEFAULT);
+        return encodedImage;
     }
 }

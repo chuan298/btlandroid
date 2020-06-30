@@ -20,7 +20,7 @@ public class DbUtils {
         this.context = context;
     }
 
-    public ArrayList<Subject_> getWeek(Integer fragment){
+    public ArrayList<Subject_> getWeek(Integer day, String week){
 
 
         ArrayList<Subject_> weeklist = new ArrayList<>();
@@ -41,16 +41,17 @@ public class DbUtils {
 //        }
         Gson gson = new Gson();
         Type complexType = new TypeToken<ArrayList<DaySchedule>>() {}.getType();
-        ArrayList<DaySchedule> daySchedules = gson.fromJson(sharedPreferences.getString("1", " "), complexType);
+        week = week.split(" ")[1];
+        ArrayList<DaySchedule> daySchedules = gson.fromJson(sharedPreferences.getString(week, " "), complexType);
         System.out.println("data: " + daySchedules.toString());
         for(DaySchedule daySchedule: daySchedules){
             System.out.println("daySchedule: " + daySchedule);
-            if(daySchedule.getDay_number().equals(fragment)){
+            if(daySchedule.getDay_number().equals(day)){
                 for(ScheduleCourse scheduleCourse : daySchedule.getScheduleCourseList()){
                     subject = new Subject_();
                     subject.setId(scheduleCourse.getSchedule().getId());
                     subject.setSubject_name(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getSubject().getName());
-                    subject.setTeacher("An");
+                    subject.setTeacher(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getTeacher());
                     if(scheduleCourse.getTypeSchedule() == 3){
                         subject.setRoom(scheduleCourse.getSchedule().getPracticeGroup().getPracticeRoom().getName());
                         subject.setFromTime(getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getPracticeShift().getStartLesson()));

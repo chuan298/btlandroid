@@ -1,5 +1,6 @@
 package com.ptit.timetable.fragments;
 
+import android.annotation.SuppressLint;
 import android.support.v4.app.Fragment;
 import android.os.Bundle;;
 import android.view.LayoutInflater;
@@ -17,6 +18,7 @@ import com.ptit.timetable.utils.FragmentHelper;
 /**
  * Created by Ulan on 06.09.2018.
  */
+@SuppressLint("ValidFragment")
 public class SundayFragment extends Fragment {
 
     public static final int KEY_SUNDAY_FRAGMENT = 8;
@@ -24,6 +26,13 @@ public class SundayFragment extends Fragment {
     private ListView listView;
     private WeekAdapter adapter;
     private int listposition = 0;
+    private String week;
+
+    @SuppressLint("ValidFragment")
+    public SundayFragment(String week) {
+        this.week = week;
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -36,7 +45,7 @@ public class SundayFragment extends Fragment {
     private void setupAdapter(View view) {
         db = new DbUtils(getActivity());
         listView = view.findViewById(R.id.sundaylist);
-        adapter = new WeekAdapter(getActivity(), listView, R.layout.listview_week_adapter, db.getWeek(KEY_SUNDAY_FRAGMENT));
+        adapter = new WeekAdapter(getActivity(), listView, R.layout.listview_week_adapter, db.getWeek(KEY_SUNDAY_FRAGMENT, week));
         listView.setAdapter(adapter);
     }
 

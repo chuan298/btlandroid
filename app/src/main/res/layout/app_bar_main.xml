@@ -23,6 +23,16 @@
 
     </android.support.design.widget.AppBarLayout>
 
+    <Spinner
+        android:id="@+id/spinnerWeek"
+        android:layout_width="224dp"
+        android:layout_height="46dp"
+        android:layout_gravity="center"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/week_spinner_background"
+        android:gravity="center" />
+
     <android.support.design.widget.TabLayout
         android:id="@+id/tabLayout"
         android:theme="@style/AppTheme.AppBarOverlay"
