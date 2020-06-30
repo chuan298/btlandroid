@@ -12,9 +12,11 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.gson.Gson;
@@ -36,13 +38,27 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
     private ListView listView;
     private DbHelper db;
     private int listposition = 0;
-    final String BASE_URL = "http://192.168.1.67:8080";
+    final String BASE_URL = "http://73a24c38911b.ngrok.io";
     private String NAME = "";
     private String USERNAME = "";
     int ID = 0;
+    private TextView tv_id;
+    private TextView tv_name;
+    private TextView tv_class;
+    private TextView tv_ptit;
+    private TextView tv_phone;
+    private TextView tv_email;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_personinfo);
+        //
+        tv_class = findViewById(R.id.tv_class);
+        tv_email = findViewById(R.id.tv_email);
+        tv_name = findViewById(R.id.tv_student_name);
+        tv_id = findViewById(R.id.tv_student_id);
+        tv_phone = findViewById(R.id.tv_sdt);
         //
         HttpServices.setContext(getBaseContext());
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
@@ -62,7 +78,7 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                if(response.isSuccessful()){
+                if (response.isSuccessful()) {
                     Gson gson = new Gson();
                     String responseStr = response.body().string();
                     final Student student = gson.fromJson(responseStr, Student.class);
@@ -70,10 +86,13 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
                         @Override
                         public void run() {
                             Toast.makeText(getBaseContext(), student.toString(), Toast.LENGTH_LONG).show();
+                            Log.d("PersonInfo", "run: student null = "+(student==null));
+                            tv_id.setText(student.getUsername());
+                            tv_phone.setText(student.getPhone());
+                            tv_name.setText(student.getName());
                         }
                     });
-                }
-                else{
+                } else {
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
@@ -83,7 +102,6 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
                 }
             }
         });
-        setContentView(R.layout.activity_personinfo);
         initAll();
     }
 
@@ -144,7 +162,7 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
                 startActivity(homework);
                 return true;
             case R.id.tkb:
-                Toast.makeText(this,"chuyen sang trang Thời khoá biểu",Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, "chuyen sang trang Thời khoá biểu", Toast.LENGTH_SHORT).show();
                 Intent note = new Intent(PersonInfoActivity.this, TKBActivity.class);
                 startActivity(note);
                 return true;

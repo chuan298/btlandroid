@@ -20,6 +20,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AbsListView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,18 +28,18 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 import com.ptit.timetable.adapters.HistoryAdapter;
+import com.ptit.timetable.adapters.WeekAdapter;
 import com.ptit.timetable.model.Attendance;
-import com.ptit.timetable.model.DaySchedule;
 import com.ptit.timetable.model.Teacher;
 import com.ptit.timetable.R;
 import com.ptit.timetable.utils.DbHelper;
+import com.ptit.timetable.utils.DbUtils;
 import com.ptit.timetable.utils.HttpServices;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import okhttp3.Call;
 import okhttp3.Callback;
@@ -59,6 +60,7 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historycheckin);
+        listView = findViewById(R.id.historylist);
         //
         HttpServices.setContext(getBaseContext());
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
@@ -84,8 +86,15 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
                 if(response.isSuccessful()){
                     Gson gson = new Gson();
                     Type complexType = new TypeToken<List<Attendance>>() {}.getType();
-                    List<Attendance> attendances = gson.fromJson(response.body().string(), complexType);
+                    final List<Attendance> attendances = gson.fromJson(response.body().string(), complexType);
                     System.out.println(attendances);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            adapter = new HistoryAdapter(HistoryCheckinActivity.this, listView, R.layout.listview_history_adapter, (ArrayList<Attendance>) attendances);
+                            listView.setAdapter(adapter);
+                        }
+                    });
                 }
             }
         });
@@ -113,69 +122,24 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
-        setupAdapter();
-        setupListViewMultiSelect();
+        //setupAdapter();
+        //setupListViewMultiSelect();
 //        setupCustomDialog();
     }
 
-    private void setupAdapter() {
-        db = new DbHelper(context);
-        listView = findViewById(R.id.historylist);
-        adapter = new HistoryAdapter(HistoryCheckinActivity.this, listView, R.layout.listview_teachers_adapter, db.getTeacher());
-        listView.setAdapter(adapter);
-    }
+//    private void setupAdapter() {
+//        db = new DbHelper(context);
+//        listView = findViewById(R.id.historylist);
+//        adapter = new HistoryAdapter(HistoryCheckinActivity.this, listView, R.layout.listview_history_adapter, db.getTeacher());
+//        listView.setAdapter(adapter);
+//    }
+//    private void setupAdapter(View view) {
+//        db = new DbUtils(getBaseContext());
+//        listView = view.findViewById(R.id.mondaylist);
+//        adapter = new WeekAdapter(getActivity(), listView, R.layout.listview_week_adapter, db.getWeek(KEY_MONDAY_FRAGMENT, week));
+//        listView.setAdapter(adapter);
+//    }
 
-    private void setupListViewMultiSelect() {
-        final CoordinatorLayout coordinatorLayout = findViewById(R.id.coordinatorTeachers);
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setMultiChoiceModeListener(new AbsListView.MultiChoiceModeListener() {
-            @Override
-            public void onItemCheckedStateChanged(ActionMode mode, int position, long id, boolean checked) {
-                final int checkedCount = listView.getCheckedItemCount();
-                mode.setTitle(checkedCount + " " + getResources().getString(R.string.selected));
-                if(checkedCount == 0) mode.finish();
-            }
-
-            @Override
-            public boolean onCreateActionMode(ActionMode mode, Menu menu) {
-                MenuInflater menuInflater = mode.getMenuInflater();
-                menuInflater.inflate(R.menu.toolbar_action_mode, menu);
-                return true;
-            }
-
-            @Override
-            public boolean onPrepareActionMode(ActionMode mode, Menu menu) {
-                return false;
-            }
-
-            @Override
-            public boolean onActionItemClicked(final ActionMode mode, MenuItem item) {
-                switch (item.getItemId()) {
-                    case R.id.action_delete:
-                        ArrayList<Teacher> removelist = new ArrayList<>();
-                        SparseBooleanArray checkedItems = listView.getCheckedItemPositions();
-                        for(int i = 0; i < checkedItems.size(); i++) {
-                            int key = checkedItems.keyAt(i);
-                            if (checkedItems.get(key)) {
-                                db.deleteTeacherById(adapter.getItem(key));
-                                removelist.add(adapter.getTeacherList().get(key));
-                            }
-                        }
-                        adapter.getTeacherList().removeAll(removelist);
-                        db.updateTeacher(adapter.getTeacher());
-                        adapter.notifyDataSetChanged();
-                        mode.finish();
-                        return true;
-
-                    default:
-                        return false;
-                }
-            }
-            @Override
-            public void onDestroyActionMode(ActionMode mode) {
-            }
-        });
-    }
 
     @Override
     public void onBackPressed() {
@@ -193,15 +157,15 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
         return true;
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.action_settings:
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
+//    @Override
+//    public boolean onOptionsItemSelected(MenuItem item) {
+//        switch (item.getItemId()) {
+//            case R.id.action_settings:
+//                return true;
+//            default:
+//                return super.onOptionsItemSelected(item);
+//        }
+//    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {

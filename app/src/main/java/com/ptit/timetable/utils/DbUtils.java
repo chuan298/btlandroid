@@ -2,13 +2,16 @@ package com.ptit.timetable.utils;
 
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ptit.timetable.model.Attendance;
 import com.ptit.timetable.model.DaySchedule;
 import com.ptit.timetable.model.ScheduleCourse;
 import com.ptit.timetable.model.Subject_;
+import com.ptit.timetable.model.Teacher;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -76,6 +79,29 @@ public class DbUtils {
         }
         return  weeklist;
     }
+//    public ArrayList<Attendance> getAttendance() {
+//
+//        ArrayList<Attendance> attendances = new ArrayList<>();
+//        Attendance attendance;
+//
+////        Cursor cursor = db.rawQuery("SELECT * FROM " + TEACHERS, null);
+////        while (cursor.moveToNext()) {
+////            teacher = new Teacher();
+////            teacher.setId(cursor.getInt(cursor.getColumnIndex(TEACHERS_ID)));
+////            teacher.setName(cursor.getString(cursor.getColumnIndex(TEACHERS_NAME)));
+////            teacher.setPost(cursor.getString(cursor.getColumnIndex(TEACHERS_POST)));
+////            teacher.setPhonenumber(cursor.getString(cursor.getColumnIndex(TEACHERS_PHONE_NUMBER)));
+////            teacher.setEmail(cursor.getString(cursor.getColumnIndex(TEACHERS_EMAIL)));
+////            teacher.setColor(cursor.getInt(cursor.getColumnIndex(TEACHERS_COLOR)));
+////            teacherlist.add(teacher);
+////        }
+////        cursor.close();
+////        db.close();
+//        return attendances;
+//    }
+
+
+
     public static String getTimeFromShift(int i){
         String time = "";
         switch (i){
