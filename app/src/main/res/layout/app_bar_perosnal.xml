@@ -25,6 +25,6 @@
 
     <include
         android:id="@+id/include"
-        layout="@layout/content_person" />
+        layout="@layout/content_person2" />
 
 </LinearLayout>

@@ -41,7 +41,7 @@ import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
 
-    final  String LOGIN_URL = "http://59e65eebe240.ngrok.io/api/login";
+    final  String LOGIN_URL = "http://192.168.1.67:8080/api/login";
 
     Button button_login;
     LinearLayout layout;

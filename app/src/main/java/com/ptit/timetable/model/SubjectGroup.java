@@ -21,10 +21,12 @@ public class SubjectGroup {
 
     private String code;
 
+    private String teacher;
+
     public SubjectGroup() {
     }
 
-    public SubjectGroup(Integer id, Subject subject, Room room, Shift shift1, Shift shift2, Integer day, String week1, String week2, Integer groupNumber, String code) {
+    public SubjectGroup(Integer id, Subject subject, Room room, Shift shift1, Shift shift2, Integer day, String week1, String week2, Integer groupNumber, String code, String teacher) {
         this.id = id;
         this.subject = subject;
         this.room = room;
@@ -35,6 +37,7 @@ public class SubjectGroup {
         this.week2 = week2;
         this.groupNumber = groupNumber;
         this.code = code;
+        this.teacher = teacher;
     }
 
     public Integer getId() {
@@ -77,6 +80,10 @@ public class SubjectGroup {
         return code;
     }
 
+    public String getTeacher() {
+        return teacher;
+    }
+
     @Override
     public String toString() {
         return "SubjectGroup{" +
@@ -90,6 +97,7 @@ public class SubjectGroup {
                 ", week2='" + week2 + '\'' +
                 ", groupNumber=" + groupNumber +
                 ", code='" + code + '\'' +
+                ", teacher='" + teacher + '\'' +
                 '}';
     }
 }

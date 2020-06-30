@@ -84,7 +84,7 @@ public class WeekAdapter extends ArrayAdapter<Subject_> {
         holder.time.setText(this.subject.getFromTime() + " - " + this.subject.getToTime());
         holder.cardView.setCardBackgroundColor(this.subject.getColor());
 
-        hidePopUpMenu(holder);
+        //hidePopUpMenu(holder);
 
         return convertView;
     }

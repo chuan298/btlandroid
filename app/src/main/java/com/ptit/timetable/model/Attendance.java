@@ -7,13 +7,16 @@ public class Attendance {
 
     private String time;
 
+    private String image;
+
     public Attendance() {
     }
 
-    public Attendance(Integer id, StudentCourse studentCourse, String time) {
+    public Attendance(Integer id, StudentCourse studentCourse, String time, String image) {
         this.id = id;
         this.studentCourse = studentCourse;
         this.time = time;
+        this.image = image;
     }
 
     public Integer getId() {
@@ -26,6 +29,10 @@ public class Attendance {
 
     public String getTime() {
         return time;
+    }
+
+    public String getImage() {
+        return image;
     }
 
     @Override

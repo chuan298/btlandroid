@@ -8,7 +8,7 @@
     tools:context=".activities.PersonInfoActivity"
     android:orientation="vertical">
 
-    hyh114141
+
 
     <android.support.v7.widget.CardView
         android:id="@+id/exams_cardview"

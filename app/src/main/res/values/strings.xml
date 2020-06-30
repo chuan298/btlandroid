@@ -97,5 +97,6 @@
     <!-- Notification -->
     <string name="notification_title">Today\'s lessons</string>
     <string name="do_not_have_lessons">You do not have lessons!</string>
+    <string name="post_telecommunication_institute_of_technology"><![CDATA[Post & Telecommunication Institute of Technology]]></string>
 
 </resources>

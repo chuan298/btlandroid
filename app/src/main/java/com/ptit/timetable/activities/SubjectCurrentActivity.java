@@ -28,6 +28,8 @@ import android.widget.Toast;
 import com.google.gson.Gson;
 import com.ptit.timetable.R;
 import com.ptit.timetable.model.Schedule;
+import com.ptit.timetable.model.ScheduleCourse;
+import com.ptit.timetable.utils.DbUtils;
 import com.ptit.timetable.utils.HttpServices;
 
 import java.io.IOException;
@@ -39,7 +41,7 @@ import okhttp3.Response;
 
 public class SubjectCurrentActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
     ImageView imgAvatar, imgCheckin;
-    TextView tvStatus, tvName, tvUsername;
+    TextView tvStatus, tvName, tvUsername, tvSubjectName, tvTeacher, tvRoom, tvStartTime, tvEndTime;
     Button btn_checkin;
     private int REQUEST_CODE_CAMERA = 123;
     String NAME = " ";
@@ -74,13 +76,12 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()){
                     Gson gson = new Gson();
-                    Pair<Schedule, Boolean> scheduleBooleanPair = gson.fromJson(response.body().string(), Pair.class);
-                    if(scheduleBooleanPair == null){
+                    final ScheduleCourse scheduleCourse = gson.fromJson(response.body().string(), ScheduleCourse.class);
+                    if(scheduleCourse == null){
 
                         runOnUiThread(new Runnable() {
                             public void run() {
                                 setContentView(R.layout.activity_no_subject_current);
-
                                 initAllNoCourse();
                             }
                         });
@@ -90,7 +91,8 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
                             @Override
                             public void run() {
                                 setContentView(R.layout.activity_subject_current);
-                                initAll();
+                                System.out.println(scheduleCourse);
+                                initAll(scheduleCourse);
                             }
                         });
                     }
@@ -104,7 +106,8 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
 //        initAll();
     }
 
-    private void initAll() {
+    private void initAll(ScheduleCourse scheduleCourse) {
+        DbUtils dbUtils = new DbUtils(getBaseContext());
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
@@ -113,12 +116,38 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
         imgCheckin  = findViewById(R.id.imageViewCheckin);
         btn_checkin = findViewById(R.id.btn_checkin);
         tvStatus = findViewById(R.id.status);
+        tvSubjectName = findViewById(R.id.subjectName);
+        tvTeacher = findViewById(R.id.teacherSubject);
+        tvRoom = findViewById(R.id.roomSubject);
+        tvStartTime = findViewById(R.id.startTimeSubject);
+        tvEndTime = findViewById(R.id.EndtimeSubject);
         //
         View headerView = navigationView.getHeaderView(0);
         tvName = headerView.findViewById(R.id.tvHeaderName);
         tvUsername = headerView.findViewById(R.id.tvHeaderUserName);
         tvName.setText(NAME);
         tvUsername.setText(USERNAME);
+        //
+        tvSubjectName.setText(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getSubject().getName());
+        tvTeacher.setText("An");
+
+        if(scheduleCourse.getTypeSchedule() == 1){
+            System.out.println("start: " + scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift1().getStartLesson());
+            tvRoom.setText(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getRoom().getName());
+            tvStartTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift1().getStartLesson()));
+            tvEndTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift1().getEndLesson()));
+        }
+        else if(scheduleCourse.getTypeSchedule() == 2){
+            tvRoom.setText(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getRoom().getName());
+            tvStartTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift2().getStartLesson()));
+            tvEndTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getSubjectGroup().getShift2().getEndLesson()));
+        }
+        else if(scheduleCourse.getTypeSchedule() == 3){
+            tvRoom.setText(scheduleCourse.getSchedule().getPracticeGroup().getPracticeRoom().getName());
+            tvStartTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getPracticeShift().getStartLesson()));
+            tvEndTime.setText(DbUtils.getTimeFromShift(scheduleCourse.getSchedule().getPracticeGroup().getPracticeShift().getEndLesson()));
+        }
+
         //
         imgCheckin.setOnClickListener(new View.OnClickListener() {
             @Override

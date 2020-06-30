@@ -1,0 +1,348 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/coordinatorHomeworks"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".activities.PersonInfoActivity">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        android:layout_weight="1"
+        android:gravity="center">
+
+
+        <FrameLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:gravity="center_horizontal"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent">
+
+                <ImageView
+                    android:scaleType="centerCrop"
+                    android:adjustViewBounds="true"
+                    android:layout_weight="1"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:src="@drawable/background"
+                    android:contentDescription="TODO" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:layout_height="match_parent">
+                    <android.support.constraint.ConstraintLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent">
+
+                        <TextView
+                            android:id="@+id/tv_student_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Le Cong Hieu"
+                            android:textColor="#000000"
+                            android:textSize="20sp"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toStartOf="parent"
+                            app:layout_constraintTop_toTopOf="parent" />
+
+                        <ImageButton
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:adjustViewBounds="true"
+                            android:scaleType="fitXY"
+                            android:background="#FFFFFF"
+                            android:src="@drawable/baseline_edit_24"
+                            app:layout_constraintBottom_toBottomOf="parent"
+                            app:layout_constraintEnd_toEndOf="parent"
+                            app:layout_constraintStart_toEndOf="@+id/tv_student_name"
+                            app:layout_constraintTop_toTopOf="parent"
+                            app:layout_constraintHorizontal_bias="0.0"/>
+                    </android.support.constraint.ConstraintLayout>
+
+                </LinearLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center">
+
+
+
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:elevation="12dp"
+                    android:id="@+id/view2"
+                    app:cardCornerRadius="40dp"
+                    android:innerRadius="0dp"
+                    android:shape="ring"
+                    android:thicknessRatio="1.9">
+                    <ImageView
+                        android:id="@+id/imageView1"
+                        android:layout_height="80dp"
+                        android:layout_width="match_parent"
+                        android:src="@drawable/baseline_person_black_24"
+                        android:scaleType="centerCrop"
+                        android:background="@drawable/img_rounded">
+                    </ImageView>
+                </android.support.v7.widget.CardView>
+<!--                    <android.support.v7.widget.CardView-->
+<!--                        android:layout_width="80dp"-->
+<!--                        android:layout_height="80dp"-->
+<!--                        android:elevation="12dp"-->
+<!--                        android:id="@+id/view2"-->
+<!--                        app:cardCornerRadius="40dp">-->
+
+<!--&lt;!&ndash;                        <ImageView&ndash;&gt;-->
+<!--&lt;!&ndash;                            android:id="@+id/profile_img"&ndash;&gt;-->
+<!--&lt;!&ndash;                            android:layout_height="80dp"&ndash;&gt;-->
+<!--&lt;!&ndash;                            android:layout_width="match_parent"&ndash;&gt;-->
+<!--&lt;!&ndash;                            android:src="@drawable/background"&ndash;&gt;-->
+<!--&lt;!&ndash;                            android:scaleType="centerCrop"&ndash;&gt;-->
+<!--&lt;!&ndash;                            android:contentDescription="TODO" />&ndash;&gt;-->
+<!--                    </android.support.v7.widget.CardView>-->
+
+            </LinearLayout>
+
+        </FrameLayout>
+    </LinearLayout>
+
+    <View
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="2dp"
+        android:background="#c0c0c0"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="50dp"
+        android:layout_weight="4"
+        android:paddingStart="30dp"
+        android:paddingEnd="10dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_student_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:drawableStart="@drawable/baseline_person_24"
+            android:drawablePadding="5dp"
+            android:textSize="20sp"
+            android:text="Ma sinh vien" />
+
+        <TextView
+            android:id="@+id/tv_class"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:drawableStart="@drawable/baseline_group_black_24dp"
+            android:drawablePadding="5dp"
+            android:textColor="#000000"
+            android:textSize="20sp"
+            android:text="class" />
+
+        <TextView
+            android:id="@+id/tv_university"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:drawableStart="@drawable/baseline_school_24"
+            android:drawablePadding="5dp"
+            android:text="@string/post_telecommunication_institute_of_technology" />
+
+        <TextView
+            android:id="@+id/tv_sdt"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="#000000"
+            android:drawableStart="@drawable/baseline_phone_24"
+            android:drawablePadding="5dp"
+            android:textSize="20sp"
+            android:text="so dien thoai" />
+
+        <TextView
+            android:id="@+id/tv_email"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="20sp"
+            android:textColor="#000000"
+            android:drawablePadding="5dp"
+            android:drawableStart="@drawable/baseline_email_24"
+            android:text="@string/email" />
+    </LinearLayout>
+<!--    <android.support.v7.widget.CardView-->
+<!--        android:id="@+id/exams_cardview"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_margin="10dp"-->
+<!--        android:layout_weight="4"-->
+<!--        app:cardCornerRadius="5dp"-->
+<!--        app:cardElevation="5dp">-->
+
+<!--        <android.support.constraint.ConstraintLayout-->
+<!--            android:layout_width="match_parent"-->
+<!--            android:layout_height="157dp"-->
+<!--            android:background="@drawable/card_background_selector"-->
+<!--            android:descendantFocusability="afterDescendants"-->
+<!--            android:orientation="vertical"-->
+<!--            android:paddingLeft="15dp"-->
+<!--            android:paddingTop="15dp"-->
+<!--            android:paddingRight="15dp"-->
+<!--            android:paddingBottom="15dp">-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_student_name"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="34dp"-->
+<!--                android:layout_marginTop="2dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:text="StudentName"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAllCaps="true"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="18sp"-->
+<!--                android:textStyle="bold"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/popupbtn"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="parent" />-->
+
+<!--            <View-->
+<!--                android:id="@+id/line"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="1dp"-->
+<!--                android:layout_marginStart="2dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="2dp"-->
+<!--                android:background="@android:color/black"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintStart_toStartOf="parent"-->
+<!--                app:layout_constraintTop_toBottomOf="@id/tv_student_name" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_sdt"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="34dp"-->
+<!--                android:text="Số điện thoại"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintHorizontal_bias="0.466"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/imageView2"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/line" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_email"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginBottom="2dp"-->
+<!--                android:text="Email"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/tv_sdt"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/imageView"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tv_sdt"-->
+<!--                app:layout_constraintVertical_bias="1.0" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/dateexams"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:layout_marginEnd="8dp"-->
+<!--                android:text="Mã sinh viên"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toStartOf="@+id/guideline2"-->
+<!--                app:layout_constraintStart_toEndOf="@+id/imageView3"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tv_email" />-->
+
+<!--            <TextView-->
+<!--                android:id="@+id/tv_class"-->
+<!--                android:layout_width="0dp"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginStart="8dp"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                android:text="Lớp"-->
+<!--                android:textAlignment="center"-->
+<!--                android:textAllCaps="false"-->
+<!--                android:textColor="@android:color/black"-->
+<!--                android:textSize="18sp"-->
+<!--                app:layout_constraintEnd_toEndOf="@+id/tv_sdt"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/guideline2"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tv_email" />-->
+
+<!--            <android.support.constraint.Guideline-->
+<!--                android:id="@+id/guideline2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:orientation="vertical"-->
+<!--                app:layout_constraintGuide_begin="209dp" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/popupbtn"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginEnd="2dp"-->
+<!--                android:background="?selectableItemBackgroundBorderless"-->
+<!--                app:layout_constraintEnd_toEndOf="parent"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/tv_student_name"-->
+<!--                app:srcCompat="@drawable/baseline_expand_more_black_24" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_marginTop="8dp"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/line"-->
+<!--                app:layout_constraintTop_toBottomOf="@+id/tv_sdt"-->
+<!--                app:srcCompat="@drawable/baseline_room_black_24" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView2"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/line"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/tv_sdt"-->
+<!--                app:srcCompat="@drawable/baseline_person_black_24" />-->
+
+<!--            <ImageView-->
+<!--                android:id="@+id/imageView3"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                app:layout_constraintStart_toStartOf="@+id/imageView"-->
+<!--                app:layout_constraintTop_toTopOf="@+id/dateexams"-->
+<!--                app:srcCompat="@drawable/baseline_access_time_black_24" />-->
+<!--        </android.support.constraint.ConstraintLayout>-->
+<!--    </android.support.v7.widget.CardView>-->
+
+</LinearLayout>

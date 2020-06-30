@@ -10,13 +10,14 @@ import android.widget.ListView;
 import com.ptit.timetable.adapters.WeekAdapter;
 import com.ptit.timetable.utils.DbHelper;
 import com.ptit.timetable.R;
+import com.ptit.timetable.utils.DbUtils;
 import com.ptit.timetable.utils.FragmentHelper;
 
 
 public class ThursdayFragment extends Fragment {
 
-    public static final String KEY_THURSDAY_FRAGMENT = "Thursday";
-    private DbHelper db;
+    public static final int KEY_THURSDAY_FRAGMENT = 5;
+    private DbUtils db;
     private ListView listView;
     private WeekAdapter adapter;
 
@@ -25,19 +26,19 @@ public class ThursdayFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_thursday, container, false);
         setupAdapter(view);
-        setupListViewMultiSelect();
+        //setupListViewMultiSelect();
         return view;
     }
 
     private void setupAdapter(View view) {
-        db = new DbHelper(getActivity());
+        db = new DbUtils(getActivity());
         listView = view.findViewById(R.id.thursdaylist);
         adapter = new WeekAdapter(getActivity(), listView, R.layout.listview_week_adapter, db.getWeek(KEY_THURSDAY_FRAGMENT));
         listView.setAdapter(adapter);
     }
 
-    private void setupListViewMultiSelect() {
-        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
-        listView.setMultiChoiceModeListener(FragmentHelper.setupListViewMultiSelect(getActivity(), listView, adapter, db));
-    }
+//    private void setupListViewMultiSelect() {
+//        listView.setChoiceMode(ListView.CHOICE_MODE_MULTIPLE_MODAL);
+//        listView.setMultiChoiceModeListener(FragmentHelper.setupListViewMultiSelect(getActivity(), listView, adapter, db));
+//    }
 }

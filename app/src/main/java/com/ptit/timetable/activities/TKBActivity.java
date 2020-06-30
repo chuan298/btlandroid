@@ -27,6 +27,8 @@ import com.google.gson.reflect.TypeToken;
 import com.ptit.timetable.adapters.FragmentsTabAdapter;
 import com.ptit.timetable.fragments.FridayFragment;
 import com.ptit.timetable.fragments.MondayFragment;
+import com.ptit.timetable.fragments.SaturdayFragment;
+import com.ptit.timetable.fragments.SundayFragment;
 import com.ptit.timetable.fragments.ThursdayFragment;
 import com.ptit.timetable.fragments.TuesdayFragment;
 import com.ptit.timetable.fragments.WednesdayFragment;
@@ -61,6 +63,7 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
 //    private boolean switchSevenDays;
     private String NAME = "";
     private String USERNAME = "";
+    private Map<Integer, List<DaySchedule>> timetable;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,22 +82,37 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
             public void onResponse(Call call, Response response) throws IOException {
                 if(response.isSuccessful()){
                     Gson gson = new Gson();
+                    SharedPreferences sharedPreferencesTimeTable = getSharedPreferences("Timetable", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sharedPreferencesTimeTable.edit();
+                    //
                     String responStr = response.body().string();
                     System.out.println(responStr);
                     Type complexType = new TypeToken<Map<Integer, List<DaySchedule>>>() {}.getType();
-                    Map<Integer, List<DaySchedule>> timetable = gson.fromJson(responStr, complexType);
+                    timetable = gson.fromJson(responStr, complexType);
                     Set<Map.Entry<Integer, List<DaySchedule>>> entries = timetable.entrySet();
                     for( Map.Entry<Integer, List<DaySchedule>> entry : entries){
-                        System.out.println(entry.getValue().get(1).getDay_number());
+                        editor.putString(entry.getKey() + "", gson.toJson(entry.getValue()));
                     }
+                    editor.apply();
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            try {
+                                Thread.sleep(200);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
+                            setContentView(R.layout.activity_tkb);
+                            initAll();
+                        }
+                    });
 
                 }
             }
         });
 
 
-        setContentView(R.layout.activity_tkb);
-        initAll();
+
     }
 
     private void initAll() {
@@ -130,6 +148,8 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         adapter.addFragment(new WednesdayFragment(), getResources().getString(R.string.wednesday));
         adapter.addFragment(new ThursdayFragment(), getResources().getString(R.string.thursday));
         adapter.addFragment(new FridayFragment(), getResources().getString(R.string.friday));
+        adapter.addFragment(new SaturdayFragment(), getResources().getString(R.string.saturday));
+        adapter.addFragment(new SundayFragment(), getResources().getString(R.string.sunday));
         viewPager.setAdapter(adapter);
         viewPager.setCurrentItem(day == 1 ? 6 : day-2, true);
         tabLayout.setupWithViewPager(viewPager);
@@ -190,7 +210,7 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
                 startActivity(homework);
                 return true;
             case R.id.tkb:
-                Toast.makeText(this,"chuyen sang trang Thời khoá biểu",Toast.LENGTH_SHORT).show();
+                //Toast.makeText(this,"chuyen sang trang Thời khoá biểu",Toast.LENGTH_SHORT).show();
                 Intent note = new Intent(TKBActivity.this, TKBActivity.class);
                 startActivity(note);
                 return true;

@@ -17,11 +17,16 @@ public class Student {
 
     private String phone;
 
-    public Student(int id, String name, String birthday, String phone) {
+    private String avatar;
+
+    public Student(int id, String username, String password, String name, String birthday, String phone, String avatar) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
         this.name = name;
         this.birthday = birthday;
         this.phone = phone;
-        this.id = id;
+        this.avatar = avatar;
     }
 
     public Student() {
@@ -85,5 +90,9 @@ public class Student {
                 ", birthday='" + birthday + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public String getAvatar() {
+        return avatar;
     }
 }
