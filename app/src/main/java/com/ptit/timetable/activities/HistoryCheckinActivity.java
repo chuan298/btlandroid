@@ -2,6 +2,7 @@ package com.ptit.timetable.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
@@ -17,17 +18,31 @@ import android.view.ActionMode;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.AbsListView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 import com.ptit.timetable.adapters.HistoryAdapter;
+import com.ptit.timetable.model.Attendance;
+import com.ptit.timetable.model.DaySchedule;
 import com.ptit.timetable.model.Teacher;
 import com.ptit.timetable.R;
 import com.ptit.timetable.utils.DbHelper;
+import com.ptit.timetable.utils.HttpServices;
 
+import java.io.IOException;
+import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Map;
 
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class HistoryCheckinActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -36,11 +51,46 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
     private ListView listView;
     private DbHelper db;
     private HistoryAdapter adapter;
-
+    private String NAME = "";
+    private String USERNAME = "";
+    int ID = 0;
+    final String BASE_URL = "http://192.168.1.67:8080";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historycheckin);
+        //
+        HttpServices.setContext(getBaseContext());
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
+        NAME = sharedPreferences.getString("NAME", " ");
+        USERNAME = sharedPreferences.getString("USERNAME", " ");
+        ID = sharedPreferences.getInt("ID", 0);
+        //
+        HttpServices.setContext(getBaseContext());
+
+        HttpServices.getWithToken(BASE_URL + "/api/get-attendance?student_id=" + ID, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getBaseContext(), "Có lỗi xảy ra!", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()){
+                    Gson gson = new Gson();
+                    Type complexType = new TypeToken<List<Attendance>>() {}.getType();
+                    List<Attendance> attendances = gson.fromJson(response.body().string(), complexType);
+                    System.out.println(attendances);
+                }
+            }
+        });
+
+
         initAll();
     }
 
@@ -50,6 +100,13 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        //
+        View headerView = navigationView.getHeaderView(0);
+        TextView tvName = headerView.findViewById(R.id.tvHeaderName);
+        TextView tvUsername = headerView.findViewById(R.id.tvHeaderUserName);
+        tvName.setText(NAME);
+        tvUsername.setText(USERNAME);
+        //
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(

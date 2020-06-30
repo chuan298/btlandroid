@@ -81,7 +81,12 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         HttpServices.getWithToken(BASE_URL + "/api/get-timetable?student_id=" + ID, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
-
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getBaseContext(), "Có lỗi xảy ra!", Toast.LENGTH_LONG).show();
+                    }
+                });
             }
 
             @Override

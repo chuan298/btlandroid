@@ -2,6 +2,7 @@ package com.ptit.timetable.activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -16,8 +17,17 @@ import android.view.MenuItem;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.ptit.timetable.R;
+import com.ptit.timetable.model.Student;
 import com.ptit.timetable.utils.DbHelper;
+import com.ptit.timetable.utils.HttpServices;
+
+import java.io.IOException;
+
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.Response;
 
 
 public class PersonInfoActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
@@ -26,10 +36,53 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
     private ListView listView;
     private DbHelper db;
     private int listposition = 0;
-
+    final String BASE_URL = "http://192.168.1.67:8080";
+    private String NAME = "";
+    private String USERNAME = "";
+    int ID = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        //
+        HttpServices.setContext(getBaseContext());
+        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
+        NAME = sharedPreferences.getString("NAME", " ");
+        USERNAME = sharedPreferences.getString("USERNAME", " ");
+        ID = sharedPreferences.getInt("ID", 0);
+        HttpServices.getWithToken(BASE_URL + "/api/get-info?student_id=" + ID, new Callback() {
+            @Override
+            public void onFailure(Call call, IOException e) {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        Toast.makeText(getBaseContext(), "Có lỗi xảy ra!", Toast.LENGTH_LONG).show();
+                    }
+                });
+            }
+
+            @Override
+            public void onResponse(Call call, Response response) throws IOException {
+                if(response.isSuccessful()){
+                    Gson gson = new Gson();
+                    String responseStr = response.body().string();
+                    final Student student = gson.fromJson(responseStr, Student.class);
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getBaseContext(), student.toString(), Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+                else{
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Toast.makeText(getBaseContext(), "dsadsadsa", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                }
+            }
+        });
         setContentView(R.layout.activity_personinfo);
         initAll();
     }

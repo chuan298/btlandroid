@@ -67,6 +67,7 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
         ID = sharedPreferences.getInt("ID", 0);
 
         ///
+
         System.out.println( BASE_URL + "/api/get-current-schedule?student_id=" + ID);
         HttpServices.getWithToken(BASE_URL + "/api/get-current-schedule?student_id=" + ID, new Callback() {
             @Override
@@ -192,55 +193,51 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
                         jsonObject.put("username", USERNAME);
                         jsonObject.put("studentId", ID);
                         jsonObject.put("time", time);
+                        HttpServices.postWithToken(BASE_URL + "/api/attendance", String.valueOf(jsonObject), new Callback() {
+                            @Override
+                            public void onFailure(Call call, IOException e) {
+                                runOnUiThread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        Toast.makeText(getBaseContext(), "Xảy ra lỗi", Toast.LENGTH_LONG).show();
+                                    }
+                                });
+                            }
+
+                            @Override
+                            public void onResponse(Call call, Response response) throws IOException {
+                                if(response.isSuccessful()){
+                                    String responseStr = response.body().string();
+                                    Gson gson = new Gson();
+                                    final AttendanceResponse attendanceResponse = gson.fromJson(responseStr, AttendanceResponse.class);
+
+                                    if(attendanceResponse.getIsAttendant()){
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getBaseContext(), "Điểm danh thành công ^^", Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+                                    else {
+                                        runOnUiThread(new Runnable() {
+                                            @Override
+                                            public void run() {
+                                                Toast.makeText(getBaseContext(), attendanceResponse.getMessage(), Toast.LENGTH_LONG).show();
+                                            }
+                                        });
+                                    }
+
+                                }
+                                else{
+
+                                }
+                            }
+                        });
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                    try {
-                        System.out.println(jsonObject.get("username"));
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                    HttpServices.postWithToken(BASE_URL + "/api/attendance", String.valueOf(jsonObject), new Callback() {
-                        @Override
-                        public void onFailure(Call call, IOException e) {
-                            runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    Toast.makeText(getBaseContext(), "Xảy ra lỗi", Toast.LENGTH_LONG).show();
-                                }
-                            });
-                        }
 
-                        @Override
-                        public void onResponse(Call call, Response response) throws IOException {
-                            if(response.isSuccessful()){
-                                String responseStr = response.body().string();
-                                Gson gson = new Gson();
-                                final AttendanceResponse attendanceResponse = gson.fromJson(responseStr, AttendanceResponse.class);
-
-                                if(attendanceResponse.getIsAttendant()){
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getBaseContext(), "Điểm danh thành công ^^", Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                                }
-                                else {
-                                    runOnUiThread(new Runnable() {
-                                        @Override
-                                        public void run() {
-                                            Toast.makeText(getBaseContext(), attendanceResponse.getMessage(), Toast.LENGTH_LONG).show();
-                                        }
-                                    });
-                                }
-
-                            }
-                            else{
-
-                            }
-                        }
-                    });
                 }
             }
         });
