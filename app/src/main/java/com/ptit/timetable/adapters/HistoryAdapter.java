@@ -31,9 +31,9 @@ public class HistoryAdapter extends ArrayAdapter<Teacher> {
 
     private static class ViewHolder {
         TextView name;
-        TextView post;
-        TextView phonenumber;
-        TextView email;
+        TextView room;
+        TextView teacher;
+        TextView time;
         CardView cardView;
         ImageView popup;
     }
@@ -53,34 +53,33 @@ public class HistoryAdapter extends ArrayAdapter<Teacher> {
         String post = Objects.requireNonNull(getItem(position)).getPost();
         String phonenumber = Objects.requireNonNull(getItem(position)).getPhonenumber();
         String email = Objects.requireNonNull(getItem(position)).getEmail();
-        int color = Objects.requireNonNull(getItem(position)).getColor();
+//        int color = Objects.requireNonNull(getItem(position)).getColor();
 
-        teacher = new Teacher(name, post, phonenumber, email, color);
+//        teacher = new Teacher(name, post, phonenumber, email, color);
         final ViewHolder holder;
 
-        if(convertView == null){
+        if (convertView == null) {
             LayoutInflater inflater = LayoutInflater.from(mActivity);
             convertView = inflater.inflate(mResource, parent, false);
-            holder= new ViewHolder();
-            holder.name = convertView.findViewById(R.id.nameteacher);
-            holder.post = convertView.findViewById(R.id.postteacher);
-            holder.phonenumber = convertView.findViewById(R.id.numberteacher);
-            holder.email = convertView.findViewById(R.id.emailteacher);
+            holder = new ViewHolder();
+            holder.name = convertView.findViewById(R.id.tv_name);
+            holder.time = convertView.findViewById(R.id.tv_time_history);
+            holder.room = convertView.findViewById(R.id.tv_room);
+            holder.teacher = convertView.findViewById(R.id.tv_name_teacher);
             holder.cardView = convertView.findViewById(R.id.teacher_cardview);
             holder.popup = convertView.findViewById(R.id.popupbtn);
             convertView.setTag(holder);
-        }
-        else{
+        } else {
             holder = (ViewHolder) convertView.getTag();
         }
-        holder.name.setText(teacher.getName());
-        holder.post.setText(teacher.getPost());
-        holder.phonenumber.setText(teacher.getPhonenumber());
-        holder.email.setText(teacher.getEmail());
-        holder.cardView.setCardBackgroundColor(teacher.getColor());
+        holder.name.setText("aaa");
+        holder.teacher.setText("aaa");
+        holder.room.setText("101");
+        holder.time.setText("10:00");
+//        holder.cardView.setCardBackgroundColor(teacher.getColor());
 
 
-        hidePopUpMenu(holder);
+//        hidePopUpMenu(holder);
 
         return convertView;
     }
@@ -93,17 +92,16 @@ public class HistoryAdapter extends ArrayAdapter<Teacher> {
         return teacher;
     }
 
-     private void hidePopUpMenu(ViewHolder holder) {
-        SparseBooleanArray checkedItems = mListView.getCheckedItemPositions();
-        if (checkedItems.size() > 0) {
-            for (int i = 0; i < checkedItems.size(); i++) {
-                int key = checkedItems.keyAt(i);
-                if (checkedItems.get(key)) {
-                    holder.popup.setVisibility(View.INVISIBLE);
-                    }
-            }
-        } else {
-            holder.popup.setVisibility(View.VISIBLE);
-        }
-    }
+//    private void hidePopUpMenu(ViewHolder holder) {
+//        SparseBooleanArray checkedItems = mListView.getCheckedItemPositions();
+//        if (checkedItems.size() > 0) {
+//            for (int i = 0; i < checkedItems.size(); i++) {
+//                int key = checkedItems.keyAt(i);
+//                if (checkedItems.get(key)) {
+//                    holder.popup.setVisibility(View.INVISIBLE);
+//                }
+//            }
+//        } else {
+//        }
+//    }
 }

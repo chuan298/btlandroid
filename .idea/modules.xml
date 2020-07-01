@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-btlandroid.iml" filepath="$PROJECT_DIR$/.idea/modules/AndroidStudioProjects-btlandroid.iml" group="btlandroid" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/app/app.iml" filepath="$PROJECT_DIR$/.idea/modules/app/app.iml" group="btlandroid/app" />
       <module fileurl="file://$PROJECT_DIR$/.idea/modules/btlandroid.iml" filepath="$PROJECT_DIR$/.idea/modules/btlandroid.iml" group="btlandroid" />
     </modules>

@@ -18,7 +18,7 @@
                                 <PersistentState>
                                   <option name="values">
                                     <map>
-                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/camera_front/baseline_camera_front_24.xml" />
+                                      <entry key="url" value="jar:file:/C:/Program%20Files/Android/Android%20Studio/plugins/android/lib/android.jar!/images/material/icons/materialicons/expand_more/baseline_expand_more_24.xml" />
                                     </map>
                                   </option>
                                 </PersistentState>
@@ -28,8 +28,8 @@
                         </option>
                         <option name="values">
                           <map>
-                            <entry key="color" value="1f1516" />
-                            <entry key="outputName" value="ic_checkin" />
+                            <entry key="color" value="fdfff4" />
+                            <entry key="outputName" value="ic_baseline_expand_more_24" />
                             <entry key="sourceFile" value="C:\Users\DELL\TimeTable-master" />
                           </map>
                         </option>

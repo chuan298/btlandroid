@@ -60,7 +60,7 @@ import okhttp3.Response;
 
 
 public class TKBActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    final String BASE_URL = "http://192.168.1.67:8080";
+    final String BASE_URL = "http://73a24c38911b.ngrok.io";
     private FragmentsTabAdapter adapter;
     private ViewPager viewPager;
     private Spinner spinnerWeek;
