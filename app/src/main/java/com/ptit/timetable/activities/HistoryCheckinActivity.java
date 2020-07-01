@@ -2,7 +2,7 @@ package com.ptit.timetable.activities;
 
 import android.content.Context;
 import android.content.Intent;
-import android.support.annotation.NonNull;
+//import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -20,6 +20,8 @@ import android.view.MenuItem;
 import android.widget.AbsListView;
 import android.widget.ListView;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.ptit.timetable.adapters.HistoryAdapter;
 import com.ptit.timetable.model.Teacher;

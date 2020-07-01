@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:background="#CD4A4A"
+    android:background="#005FFF"
     android:gravity="center"
     android:orientation="vertical"
     tools:context=".activities.LoginActivity">
@@ -19,37 +19,37 @@
         app:srcCompat="@drawable/logo" />
 
     <LinearLayout
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:layout_marginBottom="100dp"
+        android:layout_marginStart="60dp"
+        android:layout_marginEnd="60dp"
         android:gravity="center"
         android:orientation="vertical">
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:layout_marginTop="80dp"
             android:layout_marginBottom="8dp"
             android:orientation="horizontal">
 
-            <TextView
-                android:layout_width="117dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Mã sinh viên"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
 
             <EditText
                 android:id="@+id/edUsername"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
                 android:layout_weight="1"
+                android:background="@drawable/ed_rounded"
                 android:backgroundTint="@color/white"
+                android:drawableStart="@drawable/baseline_person_black_18"
+                android:drawablePadding="5dp"
                 android:ems="10"
+                android:hint="Mã sinh viên"
                 android:inputType="textPersonName"
-
-                android:textColor="#FFFFFF"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textColor="#000000"
                 android:textColorHighlight="#FFFFFF" />
         </LinearLayout>
 
@@ -58,37 +58,35 @@
             android:layout_height="match_parent"
             android:orientation="horizontal">
 
-            <TextView
-                android:id="@+id/textView2"
-                android:layout_width="233dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="Mật khẩu"
-                android:textColor="#FFFFFF"
-                android:textSize="18sp" />
-
             <EditText
                 android:id="@+id/edPassword"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="30dp"
                 android:layout_weight="1"
+                android:background="@drawable/ed_rounded"
                 android:backgroundTint="@color/white"
+                android:drawableStart="@drawable/baseline_lock_black_18dp"
+                android:drawablePadding="5dp"
                 android:ems="10"
+                android:hint="Mật khẩu"
                 android:inputType="textPassword"
-                android:textColor="#FFFFFF"
+                android:paddingStart="5dp"
+                android:paddingEnd="5dp"
+                android:textColor="#000000"
                 android:textColorHighlight="#FFFFFF" />
 
         </LinearLayout>
 
         <Button
             android:id="@+id/btn_login"
-            android:layout_width="109dp"
-            android:layout_height="38dp"
-            android:layout_marginTop="25dp"
-            android:background="@drawable/button_background"
-            android:bottomLeftRadius="10dp"
-            android:bottomRightRadius="10dp"
-            android:text="Đăng nhập"
+            android:layout_width="match_parent"
+            android:layout_height="30dp"
+            android:layout_marginTop="20dp"
+            android:background="@drawable/btn_rounded"
+            android:text="@string/login"
+            android:textAllCaps="false"
+            android:textColor="#ffffff"
+            android:textSize="20sp"
             android:topLeftRadius="10dp"
             android:topRightRadius="10dp" />
 
@@ -102,5 +100,50 @@
             android:indeterminateTintMode="src_atop" />
 
     </LinearLayout>
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_centerInParent="true"-->
+    <!--                        android:text="@string/login_with_facebook"-->
+    <!--                        android:textColor="#ffffff"-->
+    <!--                        android:textSize="17sp"-->
+    <!--                        android:textStyle="bold" />-->
+    <!--                </RelativeLayout>-->
+    <!--            </android.support.v7.widget.CardView>-->
+
+    <!--            <android.support.v7.widget.CardView-->
+    <!--                android:layout_width="300dp"-->
+    <!--                android:layout_height="50dp"-->
+    <!--                android:layout_gravity="center_horizontal"-->
+    <!--                android:layout_marginTop="10dp"-->
+    <!--                app:cardBackgroundColor="#3b5998">-->
+
+    <!--                <RelativeLayout-->
+    <!--                    android:id="@+id/login_button_google"-->
+    <!--                    android:layout_width="match_parent"-->
+    <!--                    android:layout_height="match_parent"-->
+    <!--                    android:layout_margin="5dp"-->
+    <!--                    android:background="#ffffff">-->
+
+    <!--                    <ImageView-->
+    <!--                        android:layout_width="30dp"-->
+    <!--                        android:layout_height="30dp"-->
+    <!--                        android:layout_alignParentLeft="true"-->
+    <!--                        android:layout_centerVertical="true"-->
+    <!--                        android:layout_marginLeft="10dp"-->
+    <!--                        android:src="@drawable/ic_google" />-->
+
+    <!--                    <TextView-->
+    <!--                        android:layout_width="wrap_content"-->
+    <!--                        android:layout_height="wrap_content"-->
+    <!--                        android:layout_centerInParent="true"-->
+    <!--                        android:text="@string/sign_in"-->
+    <!--                        android:textColor="#000000"-->
+    <!--                        android:textSize="17sp"-->
+    <!--                        android:textStyle="bold" />-->
+    <!--                </RelativeLayout>-->
+    <!--            </android.support.v7.widget.CardView>-->
+    <!--        </LinearLayout>-->
 
 </LinearLayout>

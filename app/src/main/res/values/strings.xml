@@ -97,6 +97,10 @@
     <!-- Notification -->
     <string name="notification_title">Today\'s lessons</string>
     <string name="do_not_have_lessons">You do not have lessons!</string>
+    <string name="or">or</string>
+    <string name="login_with_facebook">Login With Facebook</string>
+    <string name="sign_in">Sign in</string>
+    <string name="login">login</string>
     <string name="post_telecommunication_institute_of_technology"><![CDATA[Post & Telecommunication Institute of Technology]]></string>
 
 </resources>
