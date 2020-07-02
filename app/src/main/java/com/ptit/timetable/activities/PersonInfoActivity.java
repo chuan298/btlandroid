@@ -3,6 +3,8 @@ package com.ptit.timetable.activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -12,11 +14,13 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.preference.PreferenceManager;
 import android.support.v7.widget.Toolbar;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -27,6 +31,7 @@ import com.ptit.timetable.model.Student;
 import com.ptit.timetable.utils.DbHelper;
 import com.ptit.timetable.utils.HttpServices;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 import okhttp3.Call;
@@ -198,5 +203,11 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
         }
     }
 
-
+    public static String convertBitmapImageToBase64(Bitmap bitmapImage){
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        bitmapImage.compress(Bitmap.CompressFormat.PNG,100,bos);
+        byte[] bb = bos.toByteArray();
+        String encodedImage = Base64.encodeToString(bb, Base64.DEFAULT);
+        return encodedImage;
+    }
 }
