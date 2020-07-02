@@ -68,7 +68,6 @@ public class HistoryAdapter extends ArrayAdapter<Attendance> {
         String time = Objects.requireNonNull(getItem(position)).getTime();
         String teacher = Objects.requireNonNull(getItem(position)).getStudentCourse().getSubjectGroup().getTeacher();
         String image = Objects.requireNonNull(getItem(position)).getImage();
-
         Bitmap bitmapImg = convertStringBase64ToBitmap(image);
 
 
@@ -83,6 +82,7 @@ public class HistoryAdapter extends ArrayAdapter<Attendance> {
             holder.time = convertView.findViewById(R.id.tv_time_history);
             holder.room = convertView.findViewById(R.id.tv_room);
             holder.teacher = convertView.findViewById(R.id.tv_name_teacher);
+            holder.image = convertView.findViewById(R.id.imge_history);
             holder.cardView = convertView.findViewById(R.id.teacher_cardview);
             holder.popup = convertView.findViewById(R.id.popupbtn);
             convertView.setTag(holder);
@@ -93,7 +93,7 @@ public class HistoryAdapter extends ArrayAdapter<Attendance> {
         holder.teacher.setText(teacher);
         holder.room.setText(room);
         holder.time.setText(time);
-       // holder.image.setImageBitmap(bitmapImg);
+        holder.image.setImageBitmap(bitmapImg);
 //        holder.cardView.setCardBackgroundColor(teacher.getColor());
 
 
@@ -123,6 +123,7 @@ public class HistoryAdapter extends ArrayAdapter<Attendance> {
 //        }
 //    }
     private static Bitmap convertStringBase64ToBitmap(String imgbase64){
+        System.out.println("imgbase64: " + imgbase64);
         byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return decodedByte;

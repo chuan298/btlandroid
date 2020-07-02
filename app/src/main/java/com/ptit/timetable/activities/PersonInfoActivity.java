@@ -40,7 +40,7 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
     private ListView listView;
     private DbHelper db;
     private int listposition = 0;
-    final String BASE_URL = "http://b306ac7f88ce.ngrok.io";
+    final String BASE_URL = "http://192.168.43.34:8080";
     private String NAME = "";
     private String USERNAME = "";
     int ID = 0;
@@ -51,6 +51,8 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
     private TextView tv_phone;
     private TextView tv_email;
     private Button btLogout;
+    private TextView tvUsernameheader;
+    private TextView tvNameheader;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,7 +91,7 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Toast.makeText(getBaseContext(), student.toString(), Toast.LENGTH_LONG).show();
+//                            Toast.makeText(getBaseContext(), student.toString(), Toast.LENGTH_LONG).show();
                             Log.d("PersonInfo", "run: student null = "+(student==null));
                             tv_id.setText(student.getUsername());
                             tv_phone.setText(student.getPhone());
@@ -126,6 +128,13 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
         navigationView.setNavigationItemSelectedListener(this);
         PreferenceManager.setDefaultValues(this, R.xml.settings, false);
         Toolbar toolbar = findViewById(R.id.toolbar);
+        //
+        View headerView = navigationView.getHeaderView(0);
+        tvNameheader = headerView.findViewById(R.id.tvHeaderName);
+        tvUsernameheader = headerView.findViewById(R.id.tvHeaderUserName);
+        tvNameheader.setText(NAME);
+        tvUsernameheader.setText(USERNAME);
+        //
         setSupportActionBar(toolbar);
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
 

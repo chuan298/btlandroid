@@ -54,7 +54,7 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
     String NAME = " ";
     String USERNAME = " ";
     int ID = 0;
-    final String BASE_URL = "http://b306ac7f88ce.ngrok.io";
+    final String BASE_URL = "http://192.168.43.34:8080";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -207,26 +207,38 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
                             @Override
                             public void onResponse(Call call, Response response) throws IOException {
                                 if(response.isSuccessful()){
-                                    String responseStr = response.body().string();
-                                    Gson gson = new Gson();
-                                    final AttendanceResponse attendanceResponse = gson.fromJson(responseStr, AttendanceResponse.class);
+                                    try{
+                                        String responseStr = response.body().string();
+                                        Gson gson = new Gson();
+                                        final AttendanceResponse attendanceResponse = gson.fromJson(responseStr, AttendanceResponse.class);
 
-                                    if(attendanceResponse.getIsAttendant()){
+                                        if(attendanceResponse.getIsAttendant()){
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getBaseContext(), "Điểm danh thành công ^^", Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                        }
+                                        else {
+                                            runOnUiThread(new Runnable() {
+                                                @Override
+                                                public void run() {
+                                                    Toast.makeText(getBaseContext(), attendanceResponse.getMessage(), Toast.LENGTH_LONG).show();
+                                                }
+                                            });
+                                        }
+                                    }
+                                    catch (Exception e){
+                                        e.printStackTrace();
                                         runOnUiThread(new Runnable() {
                                             @Override
                                             public void run() {
-                                                Toast.makeText(getBaseContext(), "Điểm danh thành công ^^", Toast.LENGTH_LONG).show();
+                                                Toast.makeText(getBaseContext(), "Xảy ra lỗi", Toast.LENGTH_LONG).show();
                                             }
                                         });
                                     }
-                                    else {
-                                        runOnUiThread(new Runnable() {
-                                            @Override
-                                            public void run() {
-                                                Toast.makeText(getBaseContext(), attendanceResponse.getMessage(), Toast.LENGTH_LONG).show();
-                                            }
-                                        });
-                                    }
+
 
                                 }
                                 else{

@@ -55,11 +55,12 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
     private String NAME = "";
     private String USERNAME = "";
     int ID = 0;
-    final String BASE_URL = "http://b306ac7f88ce.ngrok.io";
+    final String BASE_URL = "http://192.168.43.34:8080";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_historycheckin);
+
         listView = findViewById(R.id.historylist);
         //
         HttpServices.setContext(getBaseContext());

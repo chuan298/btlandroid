@@ -28,7 +28,7 @@ public class AuthenticationActivity extends AppCompatActivity {
             Intent mainIntent = new Intent(getBaseContext(), SubjectCurrentActivity.class);
             try {
                 String decode = DecodeToken.decoded(token);
-                Toast.makeText(getBaseContext(), decode, Toast.LENGTH_LONG).show();
+//                Toast.makeText(getBaseContext(), decode, Toast.LENGTH_LONG).show();
             } catch (Exception e) {
                 e.printStackTrace();
             }

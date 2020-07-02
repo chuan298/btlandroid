@@ -60,7 +60,7 @@ import okhttp3.Response;
 
 
 public class TKBActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    final String BASE_URL = "http://b306ac7f88ce.ngrok.io";
+    final String BASE_URL = "http://192.168.43.34:8080";
     private FragmentsTabAdapter adapter;
     private ViewPager viewPager;
     private Spinner spinnerWeek;
@@ -73,6 +73,7 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        setContentView(R.layout.activity_tkb);
         SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
         NAME = sharedPreferences.getString("NAME", " ");
         USERNAME = sharedPreferences.getString("USERNAME", " ");
@@ -113,15 +114,15 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
                             } catch (InterruptedException e) {
                                 e.printStackTrace();
                             }
-                            setContentView(R.layout.activity_tkb);
-                            initAll();
+
+
                         }
                     });
 
                 }
             }
         });
-
+        initAll();
 
 
     }
