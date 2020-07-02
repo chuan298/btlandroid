@@ -55,7 +55,7 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
     private String NAME = "";
     private String USERNAME = "";
     int ID = 0;
-    final String BASE_URL = "http://192.168.1.67:8080";
+    final String BASE_URL = "http://b306ac7f88ce.ngrok.io";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -87,12 +87,17 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
                     Gson gson = new Gson();
                     Type complexType = new TypeToken<List<Attendance>>() {}.getType();
                     final List<Attendance> attendances = gson.fromJson(response.body().string(), complexType);
-                    System.out.println(attendances);
+                    //System.out.println(attendances);
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            adapter = new HistoryAdapter(HistoryCheckinActivity.this, listView, R.layout.listview_history_adapter, (ArrayList<Attendance>) attendances);
-                            listView.setAdapter(adapter);
+                            try {
+                                Thread.sleep(200);
+                                adapter = new HistoryAdapter(HistoryCheckinActivity.this, listView, R.layout.listview_history_adapter, (ArrayList<Attendance>) attendances);
+                                listView.setAdapter(adapter);
+                            } catch (InterruptedException e) {
+                                e.printStackTrace();
+                            }
                         }
                     });
                 }

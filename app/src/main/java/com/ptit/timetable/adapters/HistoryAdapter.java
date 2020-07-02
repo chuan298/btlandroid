@@ -65,15 +65,14 @@ public class HistoryAdapter extends ArrayAdapter<Attendance> {
         else if(Objects.requireNonNull(getItem(position)).getType_schedule() == 1) {
             room = Objects.requireNonNull(getItem(position)).getSchedule().getPracticeGroup().getSubjectGroup().getRoom().getName();
         }
-//        String room = Objects.requireNonNull(getItem(position)).ge;
         String time = Objects.requireNonNull(getItem(position)).getTime();
         String teacher = Objects.requireNonNull(getItem(position)).getStudentCourse().getSubjectGroup().getTeacher();
         String image = Objects.requireNonNull(getItem(position)).getImage();
-//        String phonenumber = Objects.requireNonNull(getItem(position)).getPhonenumber();
-//        String email = Objects.requireNonNull(getItem(position)).getEmail();
-//        int color = Objects.requireNonNull(getItem(position)).getColor();
 
-        //attendance = new Attendance(0, );
+        Bitmap bitmapImg = convertStringBase64ToBitmap(image);
+
+
+
         final ViewHolder holder;
 
         if (convertView == null) {
@@ -94,7 +93,7 @@ public class HistoryAdapter extends ArrayAdapter<Attendance> {
         holder.teacher.setText(teacher);
         holder.room.setText(room);
         holder.time.setText(time);
-        //holder.image.setImageBitmap(convertStringBase64ToBitmap(image));
+       // holder.image.setImageBitmap(bitmapImg);
 //        holder.cardView.setCardBackgroundColor(teacher.getColor());
 
 

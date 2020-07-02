@@ -15,6 +15,8 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -38,7 +40,7 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
     private ListView listView;
     private DbHelper db;
     private int listposition = 0;
-    final String BASE_URL = "http://73a24c38911b.ngrok.io";
+    final String BASE_URL = "http://b306ac7f88ce.ngrok.io";
     private String NAME = "";
     private String USERNAME = "";
     int ID = 0;
@@ -48,6 +50,7 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
     private TextView tv_ptit;
     private TextView tv_phone;
     private TextView tv_email;
+    private Button btLogout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -59,9 +62,10 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
         tv_name = findViewById(R.id.tv_student_name);
         tv_id = findViewById(R.id.tv_student_id);
         tv_phone = findViewById(R.id.tv_sdt);
+        btLogout = findViewById(R.id.bt_Logout);
         //
         HttpServices.setContext(getBaseContext());
-        SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = getSharedPreferences("sharedPreferenceManager", MODE_PRIVATE);
         NAME = sharedPreferences.getString("NAME", " ");
         USERNAME = sharedPreferences.getString("USERNAME", " ");
         ID = sharedPreferences.getInt("ID", 0);
@@ -103,6 +107,18 @@ public class PersonInfoActivity extends AppCompatActivity implements NavigationV
             }
         });
         initAll();
+        //
+        btLogout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                editor.putString("TOKEN", "");
+                editor.apply();
+                Intent intent = new Intent(getBaseContext(), LoginActivity.class);
+                startActivity(intent);
+                finish();
+            }
+        });
     }
 
     private void initAll() {

@@ -54,7 +54,7 @@ public class SubjectCurrentActivity extends AppCompatActivity implements Navigat
     String NAME = " ";
     String USERNAME = " ";
     int ID = 0;
-    final String BASE_URL = "http://73a24c38911b.ngrok.io";
+    final String BASE_URL = "http://b306ac7f88ce.ngrok.io";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
