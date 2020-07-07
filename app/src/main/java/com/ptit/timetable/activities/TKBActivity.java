@@ -1,8 +1,10 @@
 package com.ptit.timetable.activities;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
@@ -25,8 +27,11 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
+import androidx.annotation.RequiresApi;
+
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ptit.timetable.Constant;
 import com.ptit.timetable.adapters.FragmentsTabAdapter;
 import com.ptit.timetable.fragments.FridayFragment;
 import com.ptit.timetable.fragments.MondayFragment;
@@ -46,9 +51,14 @@ import com.ptit.timetable.utils.HttpServices;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -60,16 +70,17 @@ import okhttp3.Response;
 
 
 public class TKBActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener{
-    final String BASE_URL = "http://192.168.43.34:8080";
     private FragmentsTabAdapter adapter;
     private ViewPager viewPager;
     private Spinner spinnerWeek;
 //    private boolean switchSevenDays;
     private String NAME = "";
     private String USERNAME = "";
-    private String weeks[] = {"Tuần 1", "Tuần 2", "Tuần 3", "Tuần 4", "Tuần 5", "Tuần 6", "Tuần 7", "Tuần 8", "Tuần 9", "Tuần 10"};
+    private String weeks[] = {"Tuần 1 (01/06 - 07/06)", "Tuần 2 (08/06 - 14/06)", "Tuần 3 (15/06 - 21/06)", "Tuần 4 (22/06 - 28/06)", "Tuần 5 (29/06 - 05/07)", "Tuần 6 (06/07 - 12/07)", "Tuần 7 (13/07 - 19/07)", "Tuần 8 (20/07 - 26/07)", "Tuần 9 (27/07 - 02/08)", "Tuần 10 (03/08 - 09/08)"};
     private String week = "Tuần 1";
+
     private Map<Integer, List<DaySchedule>> timetable;
+    @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -79,7 +90,7 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         USERNAME = sharedPreferences.getString("USERNAME", " ");
         int ID = sharedPreferences.getInt("ID", 0);
 
-        HttpServices.getWithToken(BASE_URL + "/api/get-timetable?student_id=" + ID, new Callback() {
+        HttpServices.getWithToken(Constant.BASE_URL + "/api/get-timetable?student_id=" + ID, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
@@ -127,6 +138,7 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
 
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void initAll() {
         NavigationView navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
@@ -144,6 +156,22 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<>(getBaseContext(), R.layout.spinner_item_week, weeks);
         arrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinnerWeek.setAdapter(arrayAdapter);
+        //
+        try{
+            DateTimeFormatter dtf = DateTimeFormatter.ofPattern("HH:mm dd/MM/yyyy");
+            LocalDateTime now = LocalDateTime.now();
+            String timeNow = dtf.format(now);
+            long week1 = calculateBetwenDateAndDate(Constant.SCHOOL_TIME_START, timeNow) / 7;
+            week1 = week1 % 7 == 0 ? week1 : week1 + 1;
+
+            week = "Tuần " + week1;
+            spinnerWeek.setSelection((int) (week1-1));
+        }
+        catch (Exception e){
+            e.printStackTrace();
+        }
+
+        //
         spinnerWeek.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -163,15 +191,17 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         drawer.addDrawerListener(toggle);
         toggle.syncState();
         setupFragments();
-        setupCustomDialog();
     }
 
+
+    @RequiresApi(api = Build.VERSION_CODES.O)
     private void setupFragments() {
         adapter = new FragmentsTabAdapter(getSupportFragmentManager());
         viewPager = findViewById(R.id.viewPager);
         TabLayout tabLayout = findViewById(R.id.tabLayout);
         Calendar calendar = Calendar.getInstance();
         int day = calendar.get(Calendar.DAY_OF_WEEK);
+
         adapter.addFragment(new MondayFragment(week), getResources().getString(R.string.monday));
         adapter.addFragment(new TuesdayFragment(week), getResources().getString(R.string.tuesday));
         adapter.addFragment(new WednesdayFragment(week), getResources().getString(R.string.wednesday));
@@ -184,15 +214,7 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
         tabLayout.setupWithViewPager(viewPager);
     }
 
-    
-    private void setupCustomDialog() {
-        ArrayList<Subject_> subjectArrayList = new ArrayList<>();
-        subjectArrayList.add(new Subject_("Lap trinh java","Nguyen Manh Son","402-A2","9:00","11:00", Color.GREEN,"monday"));
-        subjectArrayList.add(new Subject_("Lap trinh C++","Nguyen Manh Son","402-A2","9:00","11:00", Color.YELLOW,"tuesday"));
-        subjectArrayList.add(new Subject_("Lap trinh Android","Nguyen Manh Son","402-A2","9:00","11:00", Color.LTGRAY,"thursday"));
-        subjectArrayList.add(new Subject_("Lap trinh C#","Nguyen Manh Son","402-A2","9:00","11:00", Color.BLUE,"monday"));
-        AlertDialogsHelper.getAddSubjectDialog(TKBActivity.this, subjectArrayList, adapter, viewPager);
-    }
+
 
 
 
@@ -248,6 +270,16 @@ public class TKBActivity extends AppCompatActivity implements NavigationView.OnN
                 drawer.closeDrawer(GravityCompat.START);
                 return true;
         }
+    }
+    public static Long calculateBetwenDateAndDate(String date1, String date2) throws ParseException {
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm dd/MM/yyyy");
+
+        Date firstDate = sdf.parse(date1);
+        Date secondDate = sdf.parse(date2);
+        System.out.println(firstDate + " " + secondDate);
+        long diffInMillies = Math.abs(secondDate.getTime() - firstDate.getTime());
+
+        return diffInMillies / (24 * 60 * 60 * 1000);
     }
 
 }

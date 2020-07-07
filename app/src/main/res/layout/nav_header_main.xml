@@ -14,14 +14,17 @@
 
     <ImageView
         android:id="@+id/app_icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:layout_width="135dp"
+        android:layout_height="73dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginBottom="15dp"
+        app:srcCompat="@drawable/logo" />
 
     <TextView
         android:id="@+id/tvHeaderName"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="clip_horizontal"
         android:paddingTop="@dimen/nav_header_vertical_spacing"
         android:text="@string/timetable"
         android:textAppearance="@style/TextAppearance.AppCompat.Body1"

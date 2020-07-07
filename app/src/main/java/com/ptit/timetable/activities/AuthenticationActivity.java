@@ -32,11 +32,6 @@ public class AuthenticationActivity extends AppCompatActivity {
             } catch (Exception e) {
                 e.printStackTrace();
             }
-            try {
-                Thread.sleep(1000);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
             startActivity(mainIntent);
             finish();
         }

@@ -48,7 +48,7 @@
                             android:id="@+id/tv_student_name"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="Le Cong Hieu"
+                            android:text="Họ và tên"
                             android:textColor="#000000"
                             android:textSize="20sp"
                             app:layout_constraintBottom_toBottomOf="parent"
@@ -93,28 +93,14 @@
                     android:thicknessRatio="1.9">
 
                     <ImageView
-                        android:id="@+id/imageView1"
+                        android:id="@+id/iwAvatar"
                         android:layout_width="match_parent"
                         android:layout_height="80dp"
                         android:background="@drawable/img_rounded"
                         android:scaleType="centerCrop"
                         android:src="@drawable/baseline_person_black_24"></ImageView>
                 </android.support.v7.widget.CardView>
-                <!--                    <android.support.v7.widget.CardView-->
-                <!--                        android:layout_width="80dp"-->
-                <!--                        android:layout_height="80dp"-->
-                <!--                        android:elevation="12dp"-->
-                <!--                        android:id="@+id/view2"-->
-                <!--                        app:cardCornerRadius="40dp">-->
 
-                <!--&lt;!&ndash;                        <ImageView&ndash;&gt;-->
-                <!--&lt;!&ndash;                            android:id="@+id/profile_img"&ndash;&gt;-->
-                <!--&lt;!&ndash;                            android:layout_height="80dp"&ndash;&gt;-->
-                <!--&lt;!&ndash;                            android:layout_width="match_parent"&ndash;&gt;-->
-                <!--&lt;!&ndash;                            android:src="@drawable/background"&ndash;&gt;-->
-                <!--&lt;!&ndash;                            android:scaleType="centerCrop"&ndash;&gt;-->
-                <!--&lt;!&ndash;                            android:contentDescription="TODO" />&ndash;&gt;-->
-                <!--                    </android.support.v7.widget.CardView>-->
 
             </LinearLayout>
 
@@ -188,10 +174,16 @@
             android:drawablePadding="15dp"
             android:drawableStart="@drawable/baseline_email_24"
             android:text="@string/email" />
-
+        <Button
+            android:id="@+id/bt_changepw"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_marginTop="45dp"
+            android:text="Đổi mật khẩu" />
         <Button
             android:id="@+id/bt_Logout"
-            android:layout_width="124dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginTop="45dp"

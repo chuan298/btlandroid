@@ -25,8 +25,8 @@
 
     <Spinner
         android:id="@+id/spinnerWeek"
-        android:layout_width="224dp"
-        android:layout_height="46dp"
+        android:layout_width="245dp"
+        android:layout_height="45dp"
         android:layout_gravity="center"
         android:layout_marginTop="10dp"
         android:layout_marginBottom="10dp"

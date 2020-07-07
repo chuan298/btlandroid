@@ -17,6 +17,7 @@ import android.widget.Toast;
 
 
 import com.google.gson.Gson;
+import com.ptit.timetable.Constant;
 import com.ptit.timetable.R;
 import com.ptit.timetable.model.Schedule;
 import com.ptit.timetable.model.Token;
@@ -40,8 +41,6 @@ import okhttp3.RequestBody;
 import okhttp3.Response;
 
 public class LoginActivity extends AppCompatActivity {
-
-    final  String LOGIN_URL = "http://192.168.43.34:8080/api/login";
 
     Button button_login;
     LinearLayout layout;
@@ -77,7 +76,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
                 System.out.println("->>>>");
                 //
-                HttpServices.post(LOGIN_URL, String.valueOf(jsonObject), new Callback() {
+                HttpServices.post(Constant.BASE_URL + "/api/login", String.valueOf(jsonObject), new Callback() {
                     @Override
                     public void onFailure(Call call, IOException e) {
                         runOnUiThread(new Runnable() {
@@ -110,7 +109,7 @@ public class LoginActivity extends AppCompatActivity {
                             //
                             TokenDecode tokenDecode = null;
                             try {
-                                tokenDecode = gson.fromJson(DecodeToken.decoded(HttpServices.getCurrentToken()), TokenDecode.class);
+                                tokenDecode = gson.fromJson(DecodeToken.decoded(token.getAccessToken()), TokenDecode.class);
                                 editor.putInt("ID", tokenDecode.getId());
                                 editor.putString("NAME", tokenDecode.getName());
                                 editor.putString("USERNAME", tokenDecode.getUsername());
@@ -121,7 +120,7 @@ public class LoginActivity extends AppCompatActivity {
                             ///
                             runOnUiThread(new Runnable() {
                                 public void run() {
-                                    Toast.makeText(getBaseContext(), HttpServices.getCurrentToken(), Toast.LENGTH_LONG).show();
+//                                    Toast.makeText(getBaseContext(), HttpServices.getCurrentToken(), Toast.LENGTH_LONG).show();
                                     try {
                                         Thread.sleep(300);
                                     } catch (InterruptedException e) {

@@ -5,6 +5,10 @@
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,23 +17,26 @@
         android:roundIcon="@mipmap/ic_launcher"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name="com.ptit.timetable.activities.SubjectCurrentActivity"
-            android:label="Môn học hiện tại"
-            android:theme="@style/AppTheme.NoActionBar">
+        <activity android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            >
 
         </activity>
         <activity
-            android:name="com.ptit.timetable.activities.TKBActivity"
+            android:name=".activities.SubjectCurrentActivity"
+            android:label="Môn học hiện tại"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".activities.TKBActivity"
             android:label="Thời khoá biểu"
-            android:theme="@style/AppTheme.NoActionBar">
-        </activity>
+            android:theme="@style/AppTheme.NoActionBar"></activity>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name="com.ptit.timetable.activities.PersonInfoActivity"
+            android:name=".activities.PersonInfoActivity"
             android:label="Thông tin cá nhân"
             android:theme="@style/AppTheme.NoActionBar" />
 
@@ -38,11 +45,11 @@
             android:value="com.ptit.timetable.activities.PersonInfoActivity" />
 
         <activity
-            android:name="com.ptit.timetable.activities.HistoryCheckinActivity"
+            android:name=".activities.HistoryCheckinActivity"
             android:label="Lịch sử điểm danh"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
-            android:name="com.ptit.timetable.activities.AuthenticationActivity"
+            android:name=".activities.AuthenticationActivity"
             android:label=""
             android:theme="@style/AppTheme.NoActionBar">
             <intent-filter>
@@ -52,8 +59,10 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.ptit.timetable.activities.LoginActivity"
+            android:name=".activities.LoginActivity"
             android:label=""
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name="com.ptit.timetable.activities.ChangePasswordActivity"
             android:theme="@style/AppTheme.NoActionBar">
 
         </activity>

@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.ptit.timetable.Constant;
 import com.ptit.timetable.adapters.HistoryAdapter;
 import com.ptit.timetable.adapters.WeekAdapter;
 import com.ptit.timetable.model.Attendance;
@@ -55,7 +56,7 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
     private String NAME = "";
     private String USERNAME = "";
     int ID = 0;
-    final String BASE_URL = "http://192.168.43.34:8080";
+//    final String BASE_URL = "http://75d00888b979.ngrok.io";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -71,7 +72,7 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
         //
         HttpServices.setContext(getBaseContext());
 
-        HttpServices.getWithToken(BASE_URL + "/api/get-attendance?student_id=" + ID, new Callback() {
+        HttpServices.getWithToken(Constant.BASE_URL + "/api/get-attendance?student_id=" + ID, new Callback() {
             @Override
             public void onFailure(Call call, IOException e) {
                 runOnUiThread(new Runnable() {
@@ -190,7 +191,7 @@ public class HistoryCheckinActivity extends AppCompatActivity implements Navigat
                 startActivity(homework);
                 return true;
             case R.id.tkb:
-                Toast.makeText(this,"chuyen sang trang Thời khoá biểu",Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this,"chuyen sang trang Thời khoá biểu",Toast.LENGTH_SHORT).show();
                 Intent note = new Intent(HistoryCheckinActivity.this, TKBActivity.class);
                 startActivity(note);
                 return true;

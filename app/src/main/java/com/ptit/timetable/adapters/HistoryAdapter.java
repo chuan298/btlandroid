@@ -123,7 +123,7 @@ public class HistoryAdapter extends ArrayAdapter<Attendance> {
 //        }
 //    }
     private static Bitmap convertStringBase64ToBitmap(String imgbase64){
-        System.out.println("imgbase64: " + imgbase64);
+//        System.out.println("imgbase64: " + imgbase64);
         byte[] decodedString = Base64.decode(imgbase64, Base64.DEFAULT);
         Bitmap decodedByte = BitmapFactory.decodeByteArray(decodedString, 0, decodedString.length);
         return decodedByte;
